@@ -1,0 +1,8421 @@
+[
+ {
+  "name": "GMAIL_FETCH_EMAILS",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Lists Gmail messages with query and label filtering, pagination, and optional message details",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": false,
+    "desc": "Gmail advanced search query (e.g., 'from:user subject:meeting')"
+   },
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of messages to retrieve per page"
+   },
+   {
+    "name": "label_ids",
+    "type": "list",
+    "required": false,
+    "desc": "Filter by label IDs"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GMAIL_SEARCH_PEOPLE",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Searches saved contacts and optionally Other Contacts by query, returning matching person records",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "Matches contact names, nicknames, email addresses, phone numbers, and"
+   },
+   {
+    "name": "page_size",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum results to return"
+   },
+   {
+    "name": "person_fields",
+    "type": "str",
+    "required": false,
+    "desc": "Comma-separated fields to return (e.g., 'names,emailAddresses')"
+   },
+   {
+    "name": "other_contacts",
+    "type": "bool",
+    "required": false,
+    "desc": "When True, searches both saved contacts and 'Other Contacts'"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GMAIL_SEND_EMAIL",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Sends an email immediately through Gmail to specified To, Cc, or Bcc recipients, with a subject",
+  "params": [
+   {
+    "name": "recipient_email",
+    "type": "str",
+    "required": true,
+    "desc": "Primary recipient's email address"
+   },
+   {
+    "name": "body",
+    "type": "str",
+    "required": true,
+    "desc": "Email content (plain text or HTML)"
+   },
+   {
+    "name": "subject",
+    "type": "str",
+    "required": false,
+    "desc": "Subject line of the email"
+   },
+   {
+    "name": "cc",
+    "type": "list",
+    "required": false,
+    "desc": "Carbon Copy (CC) recipients' email addresses"
+   },
+   {
+    "name": "bcc",
+    "type": "list",
+    "required": false,
+    "desc": "Blind Carbon Copy (BCC) recipients' email addresses"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GMAIL_LIST_LABELS",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Retrieves all system and user-created labels for a Gmail account in a single unpaginated response",
+  "params": [
+   {
+    "name": "include_details",
+    "type": "bool",
+    "required": false,
+    "desc": "If true, fetches detailed info for each label including"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GMAIL_MOVE_TO_TRASH",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Moves an existing, non-deleted email message to the trash for the specified user",
+  "params": [
+   {
+    "name": "message_id",
+    "type": "str",
+    "required": true,
+    "desc": "Required"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GMAIL_REPLY_TO_THREAD",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Sends a reply to a Gmail thread using its original subject and quoting the last returned",
+  "params": [
+   {
+    "name": "message_body",
+    "type": "str",
+    "required": true,
+    "desc": "Content of the reply message, either plain text or"
+   },
+   {
+    "name": "thread_id",
+    "type": "str",
+    "required": true,
+    "desc": "Identifier of the Gmail thread for the reply"
+   },
+   {
+    "name": "recipient_email",
+    "type": "str",
+    "required": false,
+    "desc": "Primary recipient's email address in format 'user@domain.com'"
+   },
+   {
+    "name": "cc",
+    "type": "list",
+    "required": false,
+    "desc": "Carbon Copy (CC) recipients' email addresses in format 'user@domain.com'"
+   },
+   {
+    "name": "bcc",
+    "type": "list",
+    "required": false,
+    "desc": "Blind Carbon Copy (BCC) recipients' email addresses in format"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GMAIL_CREATE_EMAIL_DRAFT",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Creates a Gmail draft with optional recipients, subject, plain or HTML body, attachments, and threading",
+  "params": [
+   {
+    "name": "recipient_email",
+    "type": "str",
+    "required": true,
+    "desc": "Primary recipient's email address"
+   },
+   {
+    "name": "body",
+    "type": "str",
+    "required": true,
+    "desc": "Email body content (plain text or HTML)"
+   },
+   {
+    "name": "subject",
+    "type": "str",
+    "required": false,
+    "desc": "Email subject line"
+   },
+   {
+    "name": "cc",
+    "type": "list",
+    "required": false,
+    "desc": "Carbon Copy (CC) recipients' email addresses"
+   },
+   {
+    "name": "bcc",
+    "type": "list",
+    "required": false,
+    "desc": "Blind Carbon Copy (BCC) recipients' email addresses"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GMAIL_FORWARD_MESSAGE",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Forwards an existing Gmail message to specified recipients, with optional additional text",
+  "params": [
+   {
+    "name": "message_id",
+    "type": "str",
+    "required": true,
+    "desc": "Gmail message ID (hexadecimal string, e.g., '17f45ec49a9c3f1b')"
+   },
+   {
+    "name": "recipients",
+    "type": "list",
+    "required": true,
+    "desc": "List of email addresses to forward the message to"
+   },
+   {
+    "name": "cc",
+    "type": "list",
+    "required": false,
+    "desc": "List of email addresses to CC"
+   },
+   {
+    "name": "bcc",
+    "type": "list",
+    "required": false,
+    "desc": "List of email addresses to BCC"
+   },
+   {
+    "name": "additional_text",
+    "type": "str",
+    "required": false,
+    "desc": "Optional additional text to include before the forwarded content"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GMAIL_GET_DRAFT",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Retrieves a single Gmail draft by its ID",
+  "params": [
+   {
+    "name": "draft_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the draft to retrieve"
+   },
+   {
+    "name": "format",
+    "type": "str",
+    "required": false,
+    "desc": "Format for the draft message: 'minimal' (ID/labels only), 'full'"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GMAIL_LIST_DRAFTS",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Retrieves a paginated list of email drafts from a user's Gmail account",
+  "params": [
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of drafts to return per page"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GMAIL_GET_CONTACTS",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Lists saved Google contacts with selectable fields and pagination, optionally including Other Contacts",
+  "params": [
+   {
+    "name": "person_fields",
+    "type": "str",
+    "required": false,
+    "desc": "Comma-separated person fields to retrieve for each contact (e.g"
+   },
+   {
+    "name": "resource_name",
+    "type": "str",
+    "required": false,
+    "desc": "Identifier for the person resource whose connections are listed"
+   },
+   {
+    "name": "include_other_contacts",
+    "type": "bool",
+    "required": false,
+    "desc": "Include 'Other Contacts' (interacted with but not explicitly saved)"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GMAIL_GET_LABEL",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Gets details for a specified Gmail label",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the label to retrieve"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GMAIL_LIST_HISTORY",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Lists Gmail mailbox change history since a known history ID for incremental sync, with optional label",
+  "params": [
+   {
+    "name": "start_history_id",
+    "type": "str",
+    "required": true,
+    "desc": "Required"
+   },
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of history records to return"
+   },
+   {
+    "name": "label_id",
+    "type": "str",
+    "required": false,
+    "desc": "Only return history records involving messages with this label"
+   },
+   {
+    "name": "history_types",
+    "type": "list",
+    "required": false,
+    "desc": "Filter by specific history types"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GMAIL_GET_FILTER",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Tool to retrieve a specific Gmail filter by its ID",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the filter to be fetched"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GMAIL_DELETE_FILTER",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Tool to permanently delete a Gmail filter by its ID",
+  "params": [
+   {
+    "name": "filter_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the filter to be deleted"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GMAIL_GET_PEOPLE",
+  "app": "gmail",
+  "category": "email",
+  "split": "train",
+  "desc": "Retrieves a person's details by resource name or lists the authenticated user's Other Contacts, using a",
+  "params": [
+   {
+    "name": "page_size",
+    "type": "int",
+    "required": false,
+    "desc": "The number of 'Other Contacts' to return per page"
+   },
+   {
+    "name": "sources",
+    "type": "list",
+    "required": false,
+    "desc": "Source types to include when retrieving other contacts"
+   },
+   {
+    "name": "sync_token",
+    "type": "str",
+    "required": false,
+    "desc": "A token from a previous 'Other Contacts' list call"
+   },
+   {
+    "name": "person_fields",
+    "type": "str",
+    "required": false,
+    "desc": "A comma-separated field mask to restrict which fields on"
+   },
+   {
+    "name": "resource_name",
+    "type": "str",
+    "required": false,
+    "desc": "Resource name identifying the person for whom to retrieve"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OUTLOOK_SEARCH_MESSAGES",
+  "app": "outlook",
+  "category": "email",
+  "split": "heldout",
+  "desc": "Search Outlook messages using KQL syntax",
+  "params": [
+   {
+    "name": "subject",
+    "type": "str",
+    "required": false,
+    "desc": "Text to search for within the message subject line"
+   },
+   {
+    "name": "query",
+    "type": "str",
+    "required": false,
+    "desc": "KQL (Keyword Query Language) search query string"
+   },
+   {
+    "name": "size",
+    "type": "int",
+    "required": false,
+    "desc": "Number of search results to return per page (1-25)"
+   },
+   {
+    "name": "fromEmail",
+    "type": "str",
+    "required": false,
+    "desc": "Filter messages by sender email address or domain"
+   },
+   {
+    "name": "hasAttachments",
+    "type": "bool",
+    "required": false,
+    "desc": "Filters messages based on the presence of attachments"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OUTLOOK_CREATE_TASK",
+  "app": "outlook",
+  "category": "email",
+  "split": "heldout",
+  "desc": "Tool to create a new task in Microsoft To Do within a specified task list",
+  "params": [
+   {
+    "name": "title",
+    "type": "str",
+    "required": true,
+    "desc": "The title of the task"
+   },
+   {
+    "name": "todo_task_list_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the task list where the"
+   },
+   {
+    "name": "categories",
+    "type": "list",
+    "required": false,
+    "desc": "A list of category labels to organize the task"
+   },
+   {
+    "name": "importance",
+    "type": "str",
+    "required": false,
+    "desc": "The importance level of the task"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OUTLOOK_LIST_MESSAGES",
+  "app": "outlook",
+  "category": "email",
+  "split": "heldout",
+  "desc": "List or query Outlook messages in one folder (Inbox by default) or across the mailbox, with",
+  "params": [
+   {
+    "name": "subject",
+    "type": "str",
+    "required": false,
+    "desc": "Filter by exact match of the subject line"
+   },
+   {
+    "name": "search",
+    "type": "str",
+    "required": false,
+    "desc": "Full-text search query using Microsoft Graph $search syntax"
+   },
+   {
+    "name": "top",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of messages to return per request (1-1000)"
+   },
+   {
+    "name": "filter",
+    "type": "str",
+    "required": false,
+    "desc": "Raw OData $filter expression for server-side message filtering, for"
+   },
+   {
+    "name": "folder",
+    "type": "str",
+    "required": false,
+    "desc": "ID or well-known name of the mail folder"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OUTLOOK_SEND_EMAIL",
+  "app": "outlook",
+  "category": "email",
+  "split": "heldout",
+  "desc": "Sends an email with subject, body, recipients, and optional attachments via Microsoft Graph API",
+  "params": [
+   {
+    "name": "to",
+    "type": "str",
+    "required": true,
+    "desc": "The primary recipient's email address(es)"
+   },
+   {
+    "name": "body",
+    "type": "str",
+    "required": true,
+    "desc": "The content of the email body as a plain"
+   },
+   {
+    "name": "subject",
+    "type": "str",
+    "required": true,
+    "desc": "The subject line of the email"
+   },
+   {
+    "name": "to_name",
+    "type": "str",
+    "required": false,
+    "desc": "The display name of the primary recipient"
+   },
+   {
+    "name": "cc_emails",
+    "type": "list",
+    "required": false,
+    "desc": "List of email addresses for CC recipients"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "OUTLOOK_CALENDAR_CREATE_EVENT",
+  "app": "outlook",
+  "category": "email",
+  "split": "heldout",
+  "desc": "Creates a new Outlook calendar event, ensuring start_datetime is chronologically before end_datetime",
+  "params": [
+   {
+    "name": "subject",
+    "type": "str",
+    "required": true,
+    "desc": "The subject of the calendar event"
+   },
+   {
+    "name": "start_datetime",
+    "type": "str",
+    "required": true,
+    "desc": "The event's start date and time"
+   },
+   {
+    "name": "end_datetime",
+    "type": "str",
+    "required": true,
+    "desc": "The event's end date and time"
+   },
+   {
+    "name": "time_zone",
+    "type": "str",
+    "required": true,
+    "desc": "The time zone for the start and end times"
+   },
+   {
+    "name": "body",
+    "type": "str",
+    "required": false,
+    "desc": "The body of the event"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OUTLOOK_GET_MESSAGE",
+  "app": "outlook",
+  "category": "email",
+  "split": "heldout",
+  "desc": "Retrieve a message by immutable ID from the specified Outlook mailbox",
+  "params": [
+   {
+    "name": "message_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique immutable ID of the Outlook email message to"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OUTLOOK_GET_PROFILE",
+  "app": "outlook",
+  "category": "email",
+  "split": "heldout",
+  "desc": "Retrieves the Microsoft Outlook profile for a specified user",
+  "params": [
+   {
+    "name": "include_proxy_addresses",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether to include proxy addresses in the response"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OUTLOOK_LIST_PLACES",
+  "app": "outlook",
+  "category": "email",
+  "split": "heldout",
+  "desc": "Retrieves a collection of place objects defined in a tenant by type",
+  "params": [
+   {
+    "name": "placeType",
+    "type": "str",
+    "required": true,
+    "desc": "The type of place to retrieve"
+   },
+   {
+    "name": "top",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of places to return per page"
+   },
+   {
+    "name": "count",
+    "type": "bool",
+    "required": false,
+    "desc": "Include count of items (OData $count=true)"
+   },
+   {
+    "name": "filter",
+    "type": "str",
+    "required": false,
+    "desc": "OData filter expression to restrict returned places (OData $filter)"
+   },
+   {
+    "name": "roomListId",
+    "type": "str",
+    "required": false,
+    "desc": "The email address of a room list"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OUTLOOK_DELETE_CONTACT",
+  "app": "outlook",
+  "category": "email",
+  "split": "heldout",
+  "desc": "Permanently deletes an existing contact, using its contact_id (obtainable via 'List User Contacts' or 'Get Contact')",
+  "params": [
+   {
+    "name": "contact_id",
+    "type": "str",
+    "required": true,
+    "desc": "Identifier of the contact to be deleted, typically obtained"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "OUTLOOK_SEARCH_SITES",
+  "app": "outlook",
+  "category": "email",
+  "split": "heldout",
+  "desc": "Search the connected Microsoft 365 tenant for SharePoint sites",
+  "params": [
+   {
+    "name": "search",
+    "type": "str",
+    "required": true,
+    "desc": "Free-text query used to search SharePoint sites in the"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OUTLOOK_DELETE_MESSAGE",
+  "app": "outlook",
+  "category": "email",
+  "split": "heldout",
+  "desc": "Tool to permanently delete an Outlook email message by its message_id",
+  "params": [
+   {
+    "name": "message_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier of the message to delete, typically obtained"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "OUTLOOK_SEARCH_EVENTS",
+  "app": "outlook",
+  "category": "email",
+  "split": "heldout",
+  "desc": "Searches for calendar events in the authenticated user's primary calendar",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": false,
+    "desc": "The search query string to find calendar events"
+   },
+   {
+    "name": "start_datetime",
+    "type": "str",
+    "required": false,
+    "desc": "Start of the ISO 8601 calendar window for the"
+   },
+   {
+    "name": "end_datetime",
+    "type": "str",
+    "required": false,
+    "desc": "End of the ISO 8601 calendar window for the"
+   },
+   {
+    "name": "size",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum results per work or school Microsoft Search page"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLECALENDAR_QUICK_ADD",
+  "app": "googlecalendar",
+  "category": "calendar",
+  "split": "train",
+  "desc": "Parses natural language text to quickly create a basic Google Calendar event with its title, date",
+  "params": [
+   {
+    "name": "text",
+    "type": "str",
+    "required": true,
+    "desc": "Required natural language input describing the event"
+   },
+   {
+    "name": "calendar_id",
+    "type": "str",
+    "required": false,
+    "desc": "Identifier of the calendar for the event"
+   },
+   {
+    "name": "send_updates",
+    "type": "str",
+    "required": false,
+    "desc": "Controls whether email notifications about the event creation are"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLECALENDAR_CREATE_EVENT",
+  "app": "googlecalendar",
+  "category": "calendar",
+  "split": "train",
+  "desc": "Creates a timed or all-day Google Calendar event and returns it under response_data, without conflict checking",
+  "params": [
+   {
+    "name": "summary",
+    "type": "str",
+    "required": true,
+    "desc": "Summary (title) of the event"
+   },
+   {
+    "name": "start_datetime",
+    "type": "str",
+    "required": true,
+    "desc": "Event start time in ISO 8601 format: YYYY-MM-DDTHH:MM:SS"
+   },
+   {
+    "name": "end_datetime",
+    "type": "str",
+    "required": false,
+    "desc": "Event end time in ISO 8601 format: YYYY-MM-DDTHH:MM:SS"
+   },
+   {
+    "name": "location",
+    "type": "str",
+    "required": false,
+    "desc": "Geographic location of the event as free-form text"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "Description of the event"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLECALENDAR_DELETE_EVENT",
+  "app": "googlecalendar",
+  "category": "calendar",
+  "split": "train",
+  "desc": "Deletes an event from the specified calendar",
+  "params": [
+   {
+    "name": "event_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier of the event to delete"
+   },
+   {
+    "name": "calendar_id",
+    "type": "str",
+    "required": false,
+    "desc": "Identifier of the Google Calendar (e.g., email address, specific"
+   },
+   {
+    "name": "send_updates",
+    "type": "str",
+    "required": false,
+    "desc": "Options for who should receive notifications about event changes"
+   },
+   {
+    "name": "send_notifications",
+    "type": "bool",
+    "required": false,
+    "desc": "Deprecated"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GOOGLECALENDAR_FIND_EVENT",
+  "app": "googlecalendar",
+  "category": "calendar",
+  "split": "train",
+  "desc": "Finds events in a specified Google Calendar using text, time ranges, and event types",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": false,
+    "desc": "Free-text search terms to find events"
+   },
+   {
+    "name": "time_min",
+    "type": "str",
+    "required": false,
+    "desc": "Lower bound (exclusive) for an event's end time to"
+   },
+   {
+    "name": "time_max",
+    "type": "str",
+    "required": false,
+    "desc": "Upper bound (exclusive) for an event's start time to"
+   },
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of events per page (1-2500)"
+   },
+   {
+    "name": "order_by",
+    "type": "str",
+    "required": false,
+    "desc": "Order of events: 'startTime' (ascending by start time) or"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLECALENDAR_EVENTS_LIST",
+  "app": "googlecalendar",
+  "category": "calendar",
+  "split": "train",
+  "desc": "Lists or incrementally synchronizes events from one calendar, defaulting to the connected user's primary calendar",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": false,
+    "desc": "Free text search terms to find events that match"
+   },
+   {
+    "name": "timeMin",
+    "type": "str",
+    "required": false,
+    "desc": "Lower bound (exclusive) for an event's end time to"
+   },
+   {
+    "name": "timeMax",
+    "type": "str",
+    "required": false,
+    "desc": "Upper bound (exclusive) for an event's start time to"
+   },
+   {
+    "name": "maxResults",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of events returned on one result page"
+   },
+   {
+    "name": "orderBy",
+    "type": "str",
+    "required": false,
+    "desc": "The order of the events returned in the result"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLECALENDAR_FIND_FREE_SLOTS",
+  "app": "googlecalendar",
+  "category": "calendar",
+  "split": "train",
+  "desc": "Queries busy intervals and calculates free gaps for specified calendars, without filtering by meeting duration",
+  "params": [
+   {
+    "name": "time_min",
+    "type": "str",
+    "required": false,
+    "desc": "Start datetime for the query interval"
+   },
+   {
+    "name": "time_max",
+    "type": "str",
+    "required": false,
+    "desc": "End datetime for the query interval"
+   },
+   {
+    "name": "items",
+    "type": "list",
+    "required": false,
+    "desc": "List of calendar identifiers to query for free/busy information"
+   },
+   {
+    "name": "timezone",
+    "type": "str",
+    "required": false,
+    "desc": "IANA timezone identifier (e.g., 'America/New_York', 'Europe/London', 'Asia/Tokyo')"
+   },
+   {
+    "name": "group_expansion_max",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum calendar identifiers to return for a single group"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLECALENDAR_GET_CALENDAR",
+  "app": "googlecalendar",
+  "category": "calendar",
+  "split": "train",
+  "desc": "Gets canonical metadata for one Google Calendar, defaulting to the authenticated user's primary calendar",
+  "params": [
+   {
+    "name": "calendar_id",
+    "type": "str",
+    "required": false,
+    "desc": "Identifier of the Google Calendar to retrieve"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLECALENDAR_EVENTS_GET",
+  "app": "googlecalendar",
+  "category": "calendar",
+  "split": "train",
+  "desc": "Retrieves a SINGLE event by its unique event_id (REQUIRED)",
+  "params": [
+   {
+    "name": "event_id",
+    "type": "str",
+    "required": true,
+    "desc": "REQUIRED"
+   },
+   {
+    "name": "time_zone",
+    "type": "str",
+    "required": false,
+    "desc": "Time zone used in the response"
+   },
+   {
+    "name": "calendar_id",
+    "type": "str",
+    "required": false,
+    "desc": "Identifier of the Google Calendar (e.g., email address, specific"
+   },
+   {
+    "name": "max_attendees",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of attendees to include in the response"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLECALENDAR_CALENDARS_DELETE",
+  "app": "googlecalendar",
+  "category": "calendar",
+  "split": "train",
+  "desc": "Deletes a secondary calendar that you own or have delete permissions on",
+  "params": [
+   {
+    "name": "calendar_id",
+    "type": "str",
+    "required": true,
+    "desc": "Calendar identifier for a secondary calendar you own or"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLECALENDAR_CALENDARS_UPDATE",
+  "app": "googlecalendar",
+  "category": "calendar",
+  "split": "train",
+  "desc": "Full PUT-style update that overwrites all calendar metadata fields",
+  "params": [
+   {
+    "name": "summary",
+    "type": "str",
+    "required": true,
+    "desc": "Title of the calendar"
+   },
+   {
+    "name": "calendarId",
+    "type": "str",
+    "required": true,
+    "desc": "Calendar identifier"
+   },
+   {
+    "name": "location",
+    "type": "str",
+    "required": false,
+    "desc": "Geographic location of the calendar as free-form text"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "Description of the calendar"
+   },
+   {
+    "name": "timeZone",
+    "type": "str",
+    "required": false,
+    "desc": "The time zone of the calendar"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLECALENDAR_LIST_BUILDINGS",
+  "app": "googlecalendar",
+  "category": "calendar",
+  "split": "train",
+  "desc": "Lists a page of buildings for a Google Workspace customer, including available addresses, coordinates, and floor",
+  "params": [
+   {
+    "name": "maxResults",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of buildings to return per page"
+   },
+   {
+    "name": "customer",
+    "type": "str",
+    "required": false,
+    "desc": "The unique ID for the customer's Google Workspace account"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLECALENDAR_LIST_CALENDARS",
+  "app": "googlecalendar",
+  "category": "calendar",
+  "split": "train",
+  "desc": "Lists calendars accessible through the connected user's CalendarList, returning IDs and user-specific metadata such as access",
+  "params": [
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum calendars to return on one page"
+   },
+   {
+    "name": "sync_token",
+    "type": "str",
+    "required": false,
+    "desc": "Sync token from a previous list request to get"
+   },
+   {
+    "name": "show_hidden",
+    "type": "bool",
+    "required": false,
+    "desc": "Include calendars not typically shown in the UI"
+   },
+   {
+    "name": "show_deleted",
+    "type": "bool",
+    "required": false,
+    "desc": "Include deleted calendars in the result"
+   },
+   {
+    "name": "min_access_role",
+    "type": "str",
+    "required": false,
+    "desc": "Minimum access role for returned calendars: 'freeBusyReader', 'reader', 'writerWithoutPrivateAccess'"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "CALENDLY_GET_USER",
+  "app": "calendly",
+  "category": "calendar",
+  "split": "heldout",
+  "desc": "Retrieves comprehensive details for an existing Calendly user",
+  "params": [
+   {
+    "name": "uuid",
+    "type": "str",
+    "required": false,
+    "desc": "The unique identifier (UUID) of the user"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "CALENDLY_GET_GROUP",
+  "app": "calendly",
+  "category": "calendar",
+  "split": "heldout",
+  "desc": "Retrieves all attributes of a specific Calendly group by its UUID",
+  "params": [
+   {
+    "name": "uuid",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier (UUID) of the Calendly group"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "CALENDLY_LIST_GROUPS",
+  "app": "calendly",
+  "category": "calendar",
+  "split": "heldout",
+  "desc": "Returns a list of groups for a specified Calendly organization URI, supporting pagination",
+  "params": [
+   {
+    "name": "organization",
+    "type": "str",
+    "required": true,
+    "desc": "The URI of the organization to filter groups by"
+   },
+   {
+    "name": "count",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of groups to return per page"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "CALENDLY_GET_EVENT",
+  "app": "calendly",
+  "category": "calendar",
+  "split": "heldout",
+  "desc": "Use to retrieve a specific Calendly scheduled event by its UUID, provided the event exists in",
+  "params": [
+   {
+    "name": "uuid",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier (UUID) of the Calendly event"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "CALENDLY_CREATE_SHARE",
+  "app": "calendly",
+  "category": "calendar",
+  "split": "heldout",
+  "desc": "Creates a customizable, one-time share link for a Calendly event type, allowing specific overrides to its",
+  "params": [
+   {
+    "name": "event_type",
+    "type": "str",
+    "required": true,
+    "desc": "URI of the event type to base this share"
+   },
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "Custom name for the shared link"
+   },
+   {
+    "name": "duration",
+    "type": "int",
+    "required": false,
+    "desc": "Custom event duration in minutes, overriding event type default"
+   },
+   {
+    "name": "end_date",
+    "type": "str",
+    "required": false,
+    "desc": "End date (YYYY-MM-DD) for shared link availability"
+   },
+   {
+    "name": "start_date",
+    "type": "str",
+    "required": false,
+    "desc": "Start date (YYYY-MM-DD) for shared link availability"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "CALENDLY_CREATE_EVENT_TYPE",
+  "app": "calendly",
+  "category": "calendar",
+  "split": "heldout",
+  "desc": "Tool to create a new one-on-one event type (kind: solo) in Calendly",
+  "params": [
+   {
+    "name": "name",
+    "type": "str",
+    "required": true,
+    "desc": "The event type name that will be displayed to"
+   },
+   {
+    "name": "owner",
+    "type": "str",
+    "required": true,
+    "desc": "The owner URI for this event type (e.g., 'https://api.calendly.com/users/AAAAAAAAAAAAAAAA')"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "The event type description that will be shown on"
+   },
+   {
+    "name": "color",
+    "type": "str",
+    "required": false,
+    "desc": "Hexadecimal color value for the scheduling page"
+   },
+   {
+    "name": "active",
+    "type": "bool",
+    "required": false,
+    "desc": "Indicates if the event type is active and available"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "CALENDLY_LIST_GROUP_RELATIONSHIPS",
+  "app": "calendly",
+  "category": "calendar",
+  "split": "heldout",
+  "desc": "Lists Calendly group relationships, with optional organization, owner, and group filters and pagination",
+  "params": [
+   {
+    "name": "count",
+    "type": "int",
+    "required": false,
+    "desc": "Number of records per page (max 100)"
+   },
+   {
+    "name": "group",
+    "type": "str",
+    "required": false,
+    "desc": "Filter results by group URI"
+   },
+   {
+    "name": "owner",
+    "type": "str",
+    "required": false,
+    "desc": "Filter results by owner URI (Organization Membership or Invitation"
+   },
+   {
+    "name": "organization",
+    "type": "str",
+    "required": false,
+    "desc": "Filter results by organization URI"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "CALENDLY_GET_EVENT_TYPE",
+  "app": "calendly",
+  "category": "calendar",
+  "split": "heldout",
+  "desc": "Retrieves details for a specific Calendly event type, identified by its UUID, which must be valid",
+  "params": [
+   {
+    "name": "uuid",
+    "type": "str",
+    "required": false,
+    "desc": "Unique identifier (UUID) for the event type"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "CALENDLY_LIST_OUTGOING_COMMUNICATIONS",
+  "app": "calendly",
+  "category": "calendar",
+  "split": "heldout",
+  "desc": "Retrieves a list of outgoing SMS communications for a specified organization",
+  "params": [
+   {
+    "name": "organization",
+    "type": "str",
+    "required": true,
+    "desc": "The URI of the organization whose outgoing communications are"
+   },
+   {
+    "name": "count",
+    "type": "int",
+    "required": false,
+    "desc": "The number of records to return per page"
+   },
+   {
+    "name": "max_created_at",
+    "type": "str",
+    "required": false,
+    "desc": "Include outgoing communications that were created before this timestamp"
+   },
+   {
+    "name": "min_created_at",
+    "type": "str",
+    "required": false,
+    "desc": "Include outgoing communications that were created after this timestamp"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ZOOM_UPDATE_PROJECT",
+  "app": "zoom",
+  "category": "meetings",
+  "split": "train",
+  "desc": "Updates the name of an existing whiteboard project in Zoom",
+  "params": [
+   {
+    "name": "project_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the whiteboard project you want"
+   },
+   {
+    "name": "project_name",
+    "type": "str",
+    "required": false,
+    "desc": "The new name for the whiteboard project"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ZOOM_LIST_WEBINARS",
+  "app": "zoom",
+  "category": "meetings",
+  "split": "train",
+  "desc": "The API lists all scheduled webinars for Zoom users with a webinar plan, using me for",
+  "params": [
+   {
+    "name": "page_size",
+    "type": "int",
+    "required": false,
+    "desc": "The number of records returned within a single API"
+   },
+   {
+    "name": "type",
+    "type": "str",
+    "required": false,
+    "desc": "The type of webinar"
+   },
+   {
+    "name": "page_number",
+    "type": "int",
+    "required": false,
+    "desc": "Deprecated We will no longer support this field in"
+   },
+   {
+    "name": "next_page_token",
+    "type": "str",
+    "required": false,
+    "desc": "Token for fetching the next page of results"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ZOOM_LIST_DEVICES",
+  "app": "zoom",
+  "category": "meetings",
+  "split": "train",
+  "desc": "Lists devices in a Zoom account, including Zoom Room computers, controllers, scheduling displays, and whiteboards",
+  "params": [
+   {
+    "name": "page_size",
+    "type": "int",
+    "required": false,
+    "desc": "The number of records returned within a single API"
+   },
+   {
+    "name": "device_type",
+    "type": "int",
+    "required": false,
+    "desc": "Filter devices by device type"
+   },
+   {
+    "name": "platform_os",
+    "type": "str",
+    "required": false,
+    "desc": "Filter devices by platform operating system"
+   },
+   {
+    "name": "search_text",
+    "type": "str",
+    "required": false,
+    "desc": "Filter devices by name or serial number"
+   },
+   {
+    "name": "device_model",
+    "type": "str",
+    "required": false,
+    "desc": "Filter devices by model"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ZOOM_GET_PROJECT",
+  "app": "zoom",
+  "category": "meetings",
+  "split": "train",
+  "desc": "Retrieve a Zoom Whiteboard project by ID, returning its name and available owner, timestamp, starred and",
+  "params": [
+   {
+    "name": "project_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the whiteboard project to retrieve"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ZOOM_LIST_MEETINGS",
+  "app": "zoom",
+  "category": "meetings",
+  "split": "train",
+  "desc": "This Zoom API lists a user's scheduled meetings using the me value for user-level apps, excluding",
+  "params": [
+   {
+    "name": "to",
+    "type": "str",
+    "required": false,
+    "desc": "The end date"
+   },
+   {
+    "name": "page_size",
+    "type": "int",
+    "required": false,
+    "desc": "The number of records returned within a single API"
+   },
+   {
+    "name": "from",
+    "type": "str",
+    "required": false,
+    "desc": "The start date"
+   },
+   {
+    "name": "type",
+    "type": "str",
+    "required": false,
+    "desc": "The type of meeting"
+   },
+   {
+    "name": "timezone",
+    "type": "str",
+    "required": false,
+    "desc": "The timezone to assign to the from and to"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ZOOM_CREATE_PROJECT",
+  "app": "zoom",
+  "category": "meetings",
+  "split": "train",
+  "desc": "Creates a new whiteboard project in Zoom",
+  "params": [
+   {
+    "name": "project_name",
+    "type": "str",
+    "required": true,
+    "desc": "The name of the whiteboard project"
+   },
+   {
+    "name": "owner_email",
+    "type": "str",
+    "required": false,
+    "desc": "Email address of the project owner"
+   },
+   {
+    "name": "invite_message",
+    "type": "str",
+    "required": false,
+    "desc": "The invite message to send to collaborators"
+   },
+   {
+    "name": "whiteboard_ids",
+    "type": "list",
+    "required": false,
+    "desc": "List of whiteboard IDs to add to the project"
+   },
+   {
+    "name": "skip_notifications",
+    "type": "bool",
+    "required": false,
+    "desc": "If set to true, collaborators will not receive notifications"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ZOOM_LIST_PROJECTS",
+  "app": "zoom",
+  "category": "meetings",
+  "split": "train",
+  "desc": "Lists all whiteboard projects accessible to the user",
+  "params": [
+   {
+    "name": "page_size",
+    "type": "int",
+    "required": false,
+    "desc": "The number of records returned from a single API"
+   },
+   {
+    "name": "search_key",
+    "type": "str",
+    "required": false,
+    "desc": "The name of a project to search for"
+   },
+   {
+    "name": "next_page_token",
+    "type": "str",
+    "required": false,
+    "desc": "The next page token for pagination"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ZOOM_LIST_USERS",
+  "app": "zoom",
+  "category": "meetings",
+  "split": "train",
+  "desc": "Lists users in the connected Zoom account",
+  "params": [
+   {
+    "name": "page_size",
+    "type": "int",
+    "required": false,
+    "desc": "The number of users returned in one API call"
+   },
+   {
+    "name": "status",
+    "type": "str",
+    "required": false,
+    "desc": "Filter users by account status: active, inactive, or pending"
+   },
+   {
+    "name": "license",
+    "type": "str",
+    "required": false,
+    "desc": "Filter users assigned a Zoom Workforce or Compliance Management"
+   },
+   {
+    "name": "role_id",
+    "type": "str",
+    "required": false,
+    "desc": "Filter users by their Zoom role ID"
+   },
+   {
+    "name": "page_number",
+    "type": "str",
+    "required": false,
+    "desc": "Deprecated page number"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ZOOM_DELETE_WHITEBOARD",
+  "app": "zoom",
+  "category": "meetings",
+  "split": "train",
+  "desc": "Deletes a whiteboard by its unique identifier",
+  "params": [
+   {
+    "name": "whiteboardId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the whiteboard to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "TWITTER_RECENT_SEARCH",
+  "app": "twitter",
+  "category": "social",
+  "split": "train",
+  "desc": "Searches Tweets from the last seven days using X query syntax, with optional fields, expansions, sorting",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "REQUIRED"
+   },
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "Number of results to return"
+   },
+   {
+    "name": "end_time",
+    "type": "str",
+    "required": false,
+    "desc": "Newest UTC timestamp (YYYY-MM-DDTHH:mm:ssZ) for results"
+   },
+   {
+    "name": "since_id",
+    "type": "str",
+    "required": false,
+    "desc": "Returns Tweets more recent than this ID"
+   },
+   {
+    "name": "until_id",
+    "type": "str",
+    "required": false,
+    "desc": "Returns Tweets older than this ID"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TWITTER_CREATION_OF_A_POST",
+  "app": "twitter",
+  "category": "social",
+  "split": "train",
+  "desc": "Creates a Tweet on Twitter",
+  "params": [
+   {
+    "name": "text",
+    "type": "str",
+    "required": true,
+    "desc": "Text content of the Tweet"
+   },
+   {
+    "name": "poll_options",
+    "type": "list",
+    "required": false,
+    "desc": "List of 2 to 4 poll options (max 25"
+   },
+   {
+    "name": "quote_tweet_id",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the Tweet to quote"
+   },
+   {
+    "name": "reply_settings",
+    "type": "str",
+    "required": false,
+    "desc": "Specifies who can reply to this Tweet"
+   },
+   {
+    "name": "media_media_ids",
+    "type": "list",
+    "required": false,
+    "desc": "Up to 4 Media IDs obtained from prior uploads"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "TWITTER_POST_DELETE_BY_POST_ID",
+  "app": "twitter",
+  "category": "social",
+  "split": "train",
+  "desc": "Irreversibly deletes a specific Tweet by its ID",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the Tweet to be deleted"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "TWITTER_CREATE_LIST",
+  "app": "twitter",
+  "category": "social",
+  "split": "train",
+  "desc": "Creates a new, empty List on X (formerly Twitter), for which the provided name must be",
+  "params": [
+   {
+    "name": "name",
+    "type": "str",
+    "required": true,
+    "desc": "Name for the List (1-25 characters)"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "Brief description for the List (up to 100 characters)"
+   },
+   {
+    "name": "private",
+    "type": "bool",
+    "required": false,
+    "desc": "Sets List visibility: True for private, False for public"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TWITTER_UNLIKE_POST",
+  "app": "twitter",
+  "category": "social",
+  "split": "train",
+  "desc": "Allows an authenticated user (id) to remove their like from a specific post (tweet_id)",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the authenticated user who is unliking"
+   },
+   {
+    "name": "tweet_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the post (Tweet) that the user"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TWITTER_GET_LIST",
+  "app": "twitter",
+  "category": "social",
+  "split": "train",
+  "desc": "Returns metadata for a specific Twitter List, identified by its ID",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the Twitter List to retrieve"
+   },
+   {
+    "name": "list_fields",
+    "type": "list",
+    "required": false,
+    "desc": "A list of fields to be returned for the"
+   },
+   {
+    "name": "user_fields",
+    "type": "list",
+    "required": false,
+    "desc": "A list of fields to be returned for User"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TWITTER_SEARCH_NEWS",
+  "app": "twitter",
+  "category": "social",
+  "split": "train",
+  "desc": "Searches X for AI-generated news stories matching text",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "Text query used to match X news stories"
+   },
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of news stories to return (1-100)"
+   },
+   {
+    "name": "news_fields",
+    "type": "list",
+    "required": false,
+    "desc": "News fields to return"
+   },
+   {
+    "name": "max_age_hours",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum age in hours of matching news stories (1-720)"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TWITTER_UPDATE_LIST",
+  "app": "twitter",
+  "category": "social",
+  "split": "train",
+  "desc": "Updates an existing Twitter List's name, description, or privacy status, requiring the List ID and at",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the Twitter List to be"
+   },
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "New name for the List"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "New description for the List"
+   },
+   {
+    "name": "private",
+    "type": "bool",
+    "required": false,
+    "desc": "Controls the visibility of the List: True for private"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TWITTER_SEARCH_SPACES",
+  "app": "twitter",
+  "category": "social",
+  "split": "train",
+  "desc": "Searches for Twitter Spaces by a textual query, optionally filtering by state (live, scheduled, all) to",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "The text query to search for in Space titles"
+   },
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of Space results to return in"
+   },
+   {
+    "name": "state",
+    "type": "str",
+    "required": false,
+    "desc": "Filters Spaces by their state (e.g., 'live', 'scheduled')"
+   },
+   {
+    "name": "user_fields",
+    "type": "list",
+    "required": false,
+    "desc": "Specifies fields for expanded User objects (e.g., 'username', 'public_metrics')"
+   },
+   {
+    "name": "space_fields",
+    "type": "list",
+    "required": false,
+    "desc": "Specifies fields to include for each Space object (e.g"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TWITTER_UNFOLLOW_LIST",
+  "app": "twitter",
+  "category": "social",
+  "split": "train",
+  "desc": "Enables a user (via id) to unfollow a specific Twitter List (via list_id), which removes its",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the user who is unfollowing the"
+   },
+   {
+    "name": "list_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the Twitter List to be unfollowed"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "LINKEDIN_CREATE_LINKED_IN_POST",
+  "app": "linkedin",
+  "category": "social",
+  "split": "train",
+  "desc": "Creates a new post on LinkedIn for the authenticated user or an organization they manage",
+  "params": [
+   {
+    "name": "commentary",
+    "type": "str",
+    "required": true,
+    "desc": "The main text content of the post"
+   },
+   {
+    "name": "author",
+    "type": "str",
+    "required": true,
+    "desc": "The URN of the LinkedIn member or organization creating"
+   },
+   {
+    "name": "container",
+    "type": "str",
+    "required": false,
+    "desc": "Container entity URN for posting within a specific container"
+   },
+   {
+    "name": "visibility",
+    "type": "str",
+    "required": false,
+    "desc": "Controls who can see the post"
+   },
+   {
+    "name": "lifecycleState",
+    "type": "str",
+    "required": false,
+    "desc": "The state of the post"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "LINKEDIN_GET_VIDEOS",
+  "app": "linkedin",
+  "category": "social",
+  "split": "train",
+  "desc": "Retrieves video metadata from LinkedIn for a video owned by a person or organization",
+  "params": [
+   {
+    "name": "video_ids",
+    "type": "list",
+    "required": false,
+    "desc": "List of video URNs for batch retrieval (e.g., ['urn:li:video:C4D10AQE9WE5n4uJKUg'"
+   },
+   {
+    "name": "video_urn",
+    "type": "str",
+    "required": false,
+    "desc": "Single video URN to retrieve (e.g., 'urn:li:video:C4E10AQGUkQY7trgh-Q')"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "LINKEDIN_UPLOAD_VIDEO",
+  "app": "linkedin",
+  "category": "social",
+  "split": "train",
+  "desc": "Upload an MP4 video for a native post by the authenticated LinkedIn member and wait until",
+  "params": [
+   {
+    "name": "video_url",
+    "type": "str",
+    "required": false,
+    "desc": "Public HTTP or HTTPS URL of an MP4 video"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "LINKEDIN_UPLOAD_DOCUMENT",
+  "app": "linkedin",
+  "category": "social",
+  "split": "train",
+  "desc": "Upload a PDF, DOC, DOCX, PPT, or PPTX document owned by the authenticated LinkedIn member and",
+  "params": [
+   {
+    "name": "document_url",
+    "type": "str",
+    "required": false,
+    "desc": "Public HTTP or HTTPS URL of a PDF, DOC"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "LINKEDIN_GET_IMAGE",
+  "app": "linkedin",
+  "category": "social",
+  "split": "train",
+  "desc": "Tool to retrieve details of a LinkedIn image using its URN",
+  "params": [
+   {
+    "name": "image_urn",
+    "type": "str",
+    "required": true,
+    "desc": "The image URN identifier"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "LINKEDIN_GET_PERSON",
+  "app": "linkedin",
+  "category": "social",
+  "split": "train",
+  "desc": "Retrieves a LinkedIn member's profile information by their person ID",
+  "params": [
+   {
+    "name": "person_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the LinkedIn member"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "LINKEDIN_GET_IMAGES",
+  "app": "linkedin",
+  "category": "social",
+  "split": "train",
+  "desc": "Tool to retrieve image metadata including download URLs, status, and dimensions from LinkedIn's Images API",
+  "params": [
+   {
+    "name": "ids",
+    "type": "list",
+    "required": true,
+    "desc": "List of image URNs to retrieve"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "LINKEDIN_DELETE_POST",
+  "app": "linkedin",
+  "category": "social",
+  "split": "train",
+  "desc": "Delete a LinkedIn post using the Posts API REST endpoint",
+  "params": [
+   {
+    "name": "post_urn",
+    "type": "str",
+    "required": true,
+    "desc": "The URN of the post to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "LINKEDIN_DELETE_COMMENT",
+  "app": "linkedin",
+  "category": "social",
+  "split": "train",
+  "desc": "Permanently delete a LinkedIn comment (irreversible) using its post URN and comment ID",
+  "params": [
+   {
+    "name": "comment_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the LinkedIn comment to delete"
+   },
+   {
+    "name": "entity_urn",
+    "type": "str",
+    "required": true,
+    "desc": "The URN of the post containing the comment, such"
+   },
+   {
+    "name": "actor",
+    "type": "str",
+    "required": false,
+    "desc": "The organization URN deleting the comment on its behalf"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "FACEBOOK_CREATE_POST",
+  "app": "facebook",
+  "category": "social",
+  "split": "train",
+  "desc": "Creates a text or link post on a Facebook Page, with a required message field and",
+  "params": [
+   {
+    "name": "message",
+    "type": "str",
+    "required": true,
+    "desc": "The text content of the post At least one"
+   },
+   {
+    "name": "page_id",
+    "type": "str",
+    "required": true,
+    "desc": "The numeric ID of the Facebook Page to post"
+   },
+   {
+    "name": "link",
+    "type": "str",
+    "required": false,
+    "desc": "URL to include in the post"
+   },
+   {
+    "name": "published",
+    "type": "bool",
+    "required": false,
+    "desc": "Set to true to publish immediately, false to save"
+   },
+   {
+    "name": "scheduled_publish_time",
+    "type": "int",
+    "required": false,
+    "desc": "Unix timestamp for when the post should be published"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "FACEBOOK_GET_PAGE_POSTS",
+  "app": "facebook",
+  "category": "social",
+  "split": "train",
+  "desc": "Retrieves posts from a Facebook Page's feed using Graph API v26.0, with optional time filters",
+  "params": [
+   {
+    "name": "page_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the Facebook Page"
+   },
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Number of posts to return (max 100)"
+   },
+   {
+    "name": "since",
+    "type": "str",
+    "required": false,
+    "desc": "Filter posts updated after this time"
+   },
+   {
+    "name": "until",
+    "type": "str",
+    "required": false,
+    "desc": "Filter posts updated before this time"
+   },
+   {
+    "name": "removed_deprecated_fields",
+    "type": "list",
+    "required": false,
+    "desc": "Internal field to track deprecated fields that were automatically"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "FACEBOOK_UPDATE_POST",
+  "app": "facebook",
+  "category": "social",
+  "split": "train",
+  "desc": "Updates an existing Facebook Page post",
+  "params": [
+   {
+    "name": "post_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the post to update"
+   },
+   {
+    "name": "message",
+    "type": "str",
+    "required": false,
+    "desc": "Updated text content of the post"
+   },
+   {
+    "name": "og_phrase",
+    "type": "str",
+    "required": false,
+    "desc": "Open Graph phrase"
+   },
+   {
+    "name": "og_icon_id",
+    "type": "str",
+    "required": false,
+    "desc": "Open Graph icon ID"
+   },
+   {
+    "name": "og_object_id",
+    "type": "str",
+    "required": false,
+    "desc": "Open Graph object ID"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "FACEBOOK_LIST_BUSINESSES",
+  "app": "facebook",
+  "category": "social",
+  "split": "train",
+  "desc": "List Business Manager businesses accessible to the connected Facebook user, including selected business details and permitted",
+  "params": [
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum businesses to return in one page (1-100)"
+   },
+   {
+    "name": "after",
+    "type": "str",
+    "required": false,
+    "desc": "Opaque continuation cursor returned by a previous call"
+   },
+   {
+    "name": "before",
+    "type": "str",
+    "required": false,
+    "desc": "Cursor from paging.cursors.before for the previous page"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "FACEBOOK_LIST_PERMISSIONS",
+  "app": "facebook",
+  "category": "social",
+  "split": "train",
+  "desc": "List granted, declined, or expired Facebook permissions for the connected user and app",
+  "params": [
+   {
+    "name": "status",
+    "type": "str",
+    "required": false,
+    "desc": "Permission status to filter"
+   },
+   {
+    "name": "permission",
+    "type": "str",
+    "required": false,
+    "desc": "Permission name to filter, such as email or business_management"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "FACEBOOK_SEND_MESSAGE",
+  "app": "facebook",
+  "category": "social",
+  "split": "train",
+  "desc": "Sends a text message from a Facebook Page (not personal profiles) to a user via Messenger",
+  "params": [
+   {
+    "name": "page_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the Facebook Page sending the message"
+   },
+   {
+    "name": "message_text",
+    "type": "str",
+    "required": true,
+    "desc": "The text content of the message to send"
+   },
+   {
+    "name": "recipient_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the message recipient (user ID or"
+   },
+   {
+    "name": "tag",
+    "type": "str",
+    "required": false,
+    "desc": "Required when messaging_type is MESSAGE_TAG"
+   },
+   {
+    "name": "messaging_type",
+    "type": "str",
+    "required": false,
+    "desc": "The messaging type - RESPONSE, UPDATE, or MESSAGE_TAG"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "FACEBOOK_LIST_ADS",
+  "app": "facebook",
+  "category": "social",
+  "split": "train",
+  "desc": "List ads associated with a Facebook advertising parent",
+  "params": [
+   {
+    "name": "parent_id",
+    "type": "str",
+    "required": true,
+    "desc": "Advertising parent ID"
+   },
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of ads to request in one page"
+   },
+   {
+    "name": "after",
+    "type": "str",
+    "required": false,
+    "desc": "Cursor from paging.cursors.after for the next page"
+   },
+   {
+    "name": "before",
+    "type": "str",
+    "required": false,
+    "desc": "Cursor from paging.cursors.before for the previous page"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "FACEBOOK_DELETE_POST",
+  "app": "facebook",
+  "category": "social",
+  "split": "train",
+  "desc": "Permanently deletes a Facebook Page post",
+  "params": [
+   {
+    "name": "post_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the post to delete The token"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "FACEBOOK_GET_POST",
+  "app": "facebook",
+  "category": "social",
+  "split": "train",
+  "desc": "Retrieves details of a specific Facebook post using a full numeric Page ID and post ID",
+  "params": [
+   {
+    "name": "post_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the post to retrieve"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "INSTAGRAM_DELETE_COMMENT",
+  "app": "instagram",
+  "category": "social",
+  "split": "train",
+  "desc": "Tool to delete a comment on Instagram media",
+  "params": [
+   {
+    "name": "ig_comment_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the Instagram comment to delete"
+   },
+   {
+    "name": "graph_api_version",
+    "type": "str",
+    "required": false,
+    "desc": "Instagram Graph API version to use"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "INSTAGRAM_GET_CONVERSATION",
+  "app": "instagram",
+  "category": "social",
+  "split": "train",
+  "desc": "Get details about a specific Instagram DM conversation (participants, etc)",
+  "params": [
+   {
+    "name": "conversation_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier for the Instagram conversation thread"
+   },
+   {
+    "name": "graph_api_version",
+    "type": "str",
+    "required": false,
+    "desc": "The Graph API version to use (e.g., 'v21.0')"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "INSTAGRAM_SEND_IMAGE",
+  "app": "instagram",
+  "category": "social",
+  "split": "train",
+  "desc": "Send an image via Instagram DM to a specific user",
+  "params": [
+   {
+    "name": "image_url",
+    "type": "str",
+    "required": true,
+    "desc": "Publicly accessible URL of the image to send"
+   },
+   {
+    "name": "recipient_id",
+    "type": "str",
+    "required": true,
+    "desc": "Recipient's IGSID (Instagram Scoped User ID)"
+   },
+   {
+    "name": "ig_user_id",
+    "type": "str",
+    "required": false,
+    "desc": "Instagram Business Account ID"
+   },
+   {
+    "name": "graph_api_version",
+    "type": "str",
+    "required": false,
+    "desc": "Instagram Graph API version to use (e.g., 'v21.0')"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "INSTAGRAM_GET_MULTIPLE_NODES",
+  "app": "instagram",
+  "category": "social",
+  "split": "train",
+  "desc": "Retrieve selected fields for multiple Instagram Graph nodes and return the results keyed by requested node",
+  "params": [
+   {
+    "name": "object_ids",
+    "type": "list",
+    "required": true,
+    "desc": "Instagram Graph node IDs to retrieve, up to 50"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "INSTAGRAM_LIST_ALL_CONVERSATIONS",
+  "app": "instagram",
+  "category": "social",
+  "split": "train",
+  "desc": "List one cursor-paginated page of Instagram DM conversations for the authenticated or specified Business/Creator account, optionally",
+  "params": [
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of conversations to return in this page"
+   },
+   {
+    "name": "after",
+    "type": "str",
+    "required": false,
+    "desc": "Forward-pagination cursor from paging.cursors.after in the previous response"
+   },
+   {
+    "name": "platform",
+    "type": "str",
+    "required": false,
+    "desc": "Platform to filter conversations"
+   },
+   {
+    "name": "ig_user_id",
+    "type": "str",
+    "required": false,
+    "desc": "Instagram Business/Creator Account ID whose conversations to list"
+   },
+   {
+    "name": "graph_api_version",
+    "type": "str",
+    "required": false,
+    "desc": "The Facebook Graph API version to use for the"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "INSTAGRAM_GET_USER_INFO",
+  "app": "instagram",
+  "category": "social",
+  "split": "train",
+  "desc": "Get Instagram Business Account info including profile details and statistics",
+  "params": [
+   {
+    "name": "ig_user_id",
+    "type": "str",
+    "required": false,
+    "desc": "Instagram Business Account ID"
+   },
+   {
+    "name": "graph_api_version",
+    "type": "str",
+    "required": false,
+    "desc": "The Facebook Graph API version to use for the"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "INSTAGRAM_CREATE_CAROUSEL_CONTAINER",
+  "app": "instagram",
+  "category": "social",
+  "split": "train",
+  "desc": "Create a draft carousel post with multiple images/videos before publishing",
+  "params": [
+   {
+    "name": "ig_user_id",
+    "type": "str",
+    "required": true,
+    "desc": "Instagram Business Account ID Must be a Business or"
+   },
+   {
+    "name": "caption",
+    "type": "str",
+    "required": false,
+    "desc": "Caption for the carousel post (maximum 2,200 characters) Maximum"
+   },
+   {
+    "name": "children",
+    "type": "list",
+    "required": false,
+    "desc": "List of child creation_ids (image/video items)"
+   },
+   {
+    "name": "location_id",
+    "type": "str",
+    "required": false,
+    "desc": "Facebook Page ID of a location to tag on"
+   },
+   {
+    "name": "share_to_feed",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether the carousel should also appear in the main"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "INSTAGRAM_GET_IG_MEDIA",
+  "app": "instagram",
+  "category": "social",
+  "split": "train",
+  "desc": "Get a published Instagram Media object (photo, video, story, reel, or carousel)",
+  "params": [
+   {
+    "name": "ig_media_id",
+    "type": "str",
+    "required": true,
+    "desc": "The numeric ID of the Instagram media object from"
+   },
+   {
+    "name": "graph_api_version",
+    "type": "str",
+    "required": false,
+    "desc": "Instagram Graph API version to use"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "INSTAGRAM_GET_PAGE_CONVERSATIONS",
+  "app": "instagram",
+  "category": "social",
+  "split": "train",
+  "desc": "Get a page of Instagram conversations for an Instagram Business account, with cursor pagination",
+  "params": [
+   {
+    "name": "ig_user_id",
+    "type": "str",
+    "required": true,
+    "desc": "Instagram Business Account ID to get conversations for"
+   },
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of conversations to return per page"
+   },
+   {
+    "name": "after",
+    "type": "str",
+    "required": false,
+    "desc": "Cursor for pagination to get the next page of"
+   },
+   {
+    "name": "platform",
+    "type": "str",
+    "required": false,
+    "desc": "Platform to filter conversations"
+   },
+   {
+    "name": "graph_api_version",
+    "type": "str",
+    "required": false,
+    "desc": "The Graph API version to use (e.g., 'v21.0')"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "YOUTUBE_SEARCH_YOU_TUBE",
+  "app": "youtube",
+  "category": "social",
+  "split": "train",
+  "desc": "Searches YouTube for videos, channels, or playlists using a query term, returning structured search results",
+  "params": [
+   {
+    "name": "q",
+    "type": "str",
+    "required": true,
+    "desc": "Search query term"
+   },
+   {
+    "name": "maxResults",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of items to return per page"
+   },
+   {
+    "name": "type",
+    "type": "str",
+    "required": false,
+    "desc": "Restricts search to 'video', 'channel', or 'playlist'"
+   },
+   {
+    "name": "order",
+    "type": "str",
+    "required": false,
+    "desc": "Sort order for YouTube search results"
+   },
+   {
+    "name": "regionCode",
+    "type": "str",
+    "required": false,
+    "desc": "Return search results for videos viewable in the specified"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "YOUTUBE_LIST_CHANNEL_VIDEOS",
+  "app": "youtube",
+  "category": "social",
+  "split": "train",
+  "desc": "Lists videos from a YouTube channel identified by channel ID, handle, supported channel URL, or the",
+  "params": [
+   {
+    "name": "maxResults",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of videos to return per page"
+   },
+   {
+    "name": "mine",
+    "type": "bool",
+    "required": false,
+    "desc": "Set to true to list videos from the authenticated"
+   },
+   {
+    "name": "channelId",
+    "type": "str",
+    "required": false,
+    "desc": "The YouTube channel identifier (exactly 24 characters for UC"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "YOUTUBE_DELETE_VIDEO",
+  "app": "youtube",
+  "category": "social",
+  "split": "train",
+  "desc": "Tool to delete a YouTube video owned by the authenticated user/channel",
+  "params": [
+   {
+    "name": "videoId",
+    "type": "str",
+    "required": true,
+    "desc": "The YouTube video ID (typically an 11-character string) to"
+   },
+   {
+    "name": "confirmDelete",
+    "type": "bool",
+    "required": true,
+    "desc": "Explicit boolean confirmation required to execute the deletion"
+   },
+   {
+    "name": "onBehalfOfContentOwner",
+    "type": "str",
+    "required": false,
+    "desc": "Optional parameter used by YouTube content partners to indicate"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "YOUTUBE_UPDATE_COMMENT",
+  "app": "youtube",
+  "category": "social",
+  "split": "train",
+  "desc": "Tool to modify the text of an existing YouTube comment",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique ID of the comment to update"
+   },
+   {
+    "name": "textOriginal",
+    "type": "str",
+    "required": true,
+    "desc": "The new text content for the comment"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "YOUTUBE_UPDATE_CHANNEL",
+  "app": "youtube",
+  "category": "social",
+  "split": "train",
+  "desc": "Updates a channel's metadata including branding settings and localizations",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The channel ID being updated"
+   },
+   {
+    "name": "onBehalfOfContentOwner",
+    "type": "str",
+    "required": false,
+    "desc": "For authorized requests only"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "YOUTUBE_DELETE_PLAYLIST",
+  "app": "youtube",
+  "category": "social",
+  "split": "train",
+  "desc": "Delete a YouTube playlist owned by the authenticated user or channel after explicit confirmation",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "Specifies the YouTube playlist ID for the playlist being"
+   },
+   {
+    "name": "confirmDelete",
+    "type": "bool",
+    "required": true,
+    "desc": "Explicit boolean confirmation required to execute the deletion"
+   },
+   {
+    "name": "onBehalfOfContentOwner",
+    "type": "str",
+    "required": false,
+    "desc": "Indicates that the request's authorization credentials identify a YouTube"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "YOUTUBE_POST_COMMENT",
+  "app": "youtube",
+  "category": "social",
+  "split": "train",
+  "desc": "Tool to post a new top-level comment on a YouTube video",
+  "params": [
+   {
+    "name": "videoId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the video to comment on"
+   },
+   {
+    "name": "channelId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the channel that uploaded the video"
+   },
+   {
+    "name": "textOriginal",
+    "type": "str",
+    "required": true,
+    "desc": "The text content of the comment"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "YOUTUBE_CREATE_PLAYLIST",
+  "app": "youtube",
+  "category": "social",
+  "split": "train",
+  "desc": "Tool to create a new YouTube playlist on the authenticated user's channel",
+  "params": [
+   {
+    "name": "title",
+    "type": "str",
+    "required": true,
+    "desc": "The title of the new playlist"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "The playlist's description"
+   },
+   {
+    "name": "privacyStatus",
+    "type": "str",
+    "required": false,
+    "desc": "The playlist's privacy status"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "YOUTUBE_UPDATE_VIDEO",
+  "app": "youtube",
+  "category": "social",
+  "split": "train",
+  "desc": "Updates metadata for a YouTube video identified by videoId, which must exist",
+  "params": [
+   {
+    "name": "video_id",
+    "type": "str",
+    "required": true,
+    "desc": "The video's unique YouTube ID (string)"
+   },
+   {
+    "name": "title",
+    "type": "str",
+    "required": false,
+    "desc": "New video title as a string"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "New video description as a string"
+   },
+   {
+    "name": "tags",
+    "type": "list",
+    "required": false,
+    "desc": "New tags as a list of strings"
+   },
+   {
+    "name": "category_id",
+    "type": "str",
+    "required": false,
+    "desc": "New YouTube category ID as a string"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "REDDIT_GET",
+  "app": "reddit",
+  "category": "social",
+  "split": "heldout",
+  "desc": "Tool to retrieve a listing of Reddit posts sorted by the specified criteria (hot, new, top",
+  "params": [
+   {
+    "name": "sort",
+    "type": "str",
+    "required": true,
+    "desc": "The sorting method for results"
+   },
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of items desired (default: 25, maximum"
+   },
+   {
+    "name": "count",
+    "type": "int",
+    "required": false,
+    "desc": "A positive integer representing the number of items already"
+   },
+   {
+    "name": "show",
+    "type": "str",
+    "required": false,
+    "desc": "The string 'all' to show all posts including filtered"
+   },
+   {
+    "name": "after",
+    "type": "str",
+    "required": false,
+    "desc": "Fullname of a thing for pagination (loads posts after"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "REDDIT_GET_RANDOM",
+  "app": "reddit",
+  "category": "social",
+  "split": "heldout",
+  "desc": "Retrieve a randomly selected post from a batch of up to 100 hot posts in a",
+  "params": [
+   {
+    "name": "subreddit",
+    "type": "str",
+    "required": false,
+    "desc": "Name of the subreddit to get a random post"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "REDDIT_GET_NEW",
+  "app": "reddit",
+  "category": "social",
+  "split": "heldout",
+  "desc": "DEPRECATED: Use RetrieveRedditPost instead",
+  "params": [
+   {
+    "name": "subreddit",
+    "type": "str",
+    "required": true,
+    "desc": "Subreddit name (without 'r/' prefix)"
+   },
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of new posts to return"
+   },
+   {
+    "name": "count",
+    "type": "int",
+    "required": false,
+    "desc": "Used by Reddit to number listings after the first"
+   },
+   {
+    "name": "after",
+    "type": "str",
+    "required": false,
+    "desc": "Fullname of a thing to use as anchor for"
+   },
+   {
+    "name": "before",
+    "type": "str",
+    "required": false,
+    "desc": "Fullname of a thing to use as anchor for"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "REDDIT_DELETE_REDDIT_POST",
+  "app": "reddit",
+  "category": "social",
+  "split": "heldout",
+  "desc": "Permanently and irreversibly deletes a Reddit post by its ID",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The full name (fullname) of the Reddit post to"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "REDDIT_GET_SUBREDDIT_TRAFFIC",
+  "app": "reddit",
+  "category": "social",
+  "split": "heldout",
+  "desc": "Return hourly, daily, and monthly traffic for a moderated subreddit",
+  "params": [
+   {
+    "name": "subreddit",
+    "type": "str",
+    "required": true,
+    "desc": "Subreddit moderated by the connected account, without the 'r/'"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "REDDIT_GET_SUBREDDITS_SEARCH",
+  "app": "reddit",
+  "category": "social",
+  "split": "heldout",
+  "desc": "Tool to search subreddits by title and description",
+  "params": [
+   {
+    "name": "q",
+    "type": "str",
+    "required": true,
+    "desc": "A search query term to search subreddit titles and"
+   },
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of subreddits to return"
+   },
+   {
+    "name": "count",
+    "type": "int",
+    "required": false,
+    "desc": "A positive integer (default: 0) representing the number of"
+   },
+   {
+    "name": "show",
+    "type": "str",
+    "required": false,
+    "desc": "The string 'all' to show all subreddits including those"
+   },
+   {
+    "name": "sort",
+    "type": "str",
+    "required": false,
+    "desc": "Sort order for the search results"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "REDDIT_RETRIEVE_REDDIT_POST",
+  "app": "reddit",
+  "category": "social",
+  "split": "heldout",
+  "desc": "Retrieve a paginated listing of posts from a specified subreddit, with sort options and a time-period",
+  "params": [
+   {
+    "name": "subreddit",
+    "type": "str",
+    "required": true,
+    "desc": "A subreddit name or plus-separated multireddit from which to"
+   },
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of posts to return"
+   },
+   {
+    "name": "count",
+    "type": "int",
+    "required": false,
+    "desc": "Number of items already seen, used by Reddit to"
+   },
+   {
+    "name": "show",
+    "type": "str",
+    "required": false,
+    "desc": "Display filtering option"
+   },
+   {
+    "name": "sort",
+    "type": "str",
+    "required": false,
+    "desc": "Sort order for posts"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "REDDIT_DELETE_REDDIT_COMMENT",
+  "app": "reddit",
+  "category": "social",
+  "split": "heldout",
+  "desc": "Deletes a Reddit comment, identified by its fullname ID, if it was authored by the authenticated",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The full 'thing ID' (fullname, e.g., 't1_c0s4w1c') of the"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "REDDIT_GET_CONTROVERSIAL_POSTS",
+  "app": "reddit",
+  "category": "social",
+  "split": "heldout",
+  "desc": "Tool to retrieve controversial posts from all subreddits with time filters",
+  "params": [
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of controversial posts to return"
+   },
+   {
+    "name": "count",
+    "type": "int",
+    "required": false,
+    "desc": "Number of items already seen, used by Reddit to"
+   },
+   {
+    "name": "t",
+    "type": "str",
+    "required": false,
+    "desc": "Time filter for ranking controversial posts"
+   },
+   {
+    "name": "show",
+    "type": "str",
+    "required": false,
+    "desc": "Display filtering option"
+   },
+   {
+    "name": "after",
+    "type": "str",
+    "required": false,
+    "desc": "Fullname of a thing to use as anchor for"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "SLACK_SEND_MESSAGE",
+  "app": "slack",
+  "category": "chat",
+  "split": "train",
+  "desc": "Posts a message to a Slack channel, DM, or private group",
+  "params": [
+   {
+    "name": "channel",
+    "type": "str",
+    "required": true,
+    "desc": "ID or name of the channel, private group, or"
+   },
+   {
+    "name": "markdown_text",
+    "type": "str",
+    "required": true,
+    "desc": "Use this for normal LLM-written message content"
+   },
+   {
+    "name": "thread_ts",
+    "type": "str",
+    "required": false,
+    "desc": "Timestamp (ts) of an existing message to make this"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "SLACK_CREATE_CHANNEL",
+  "app": "slack",
+  "category": "chat",
+  "split": "train",
+  "desc": "Initiates a public or private channel-based conversation in a Slack workspace",
+  "params": [
+   {
+    "name": "name",
+    "type": "str",
+    "required": true,
+    "desc": "Name of the public or private channel to create"
+   },
+   {
+    "name": "team_id",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the Slack workspace (team) to operate on"
+   },
+   {
+    "name": "is_private",
+    "type": "bool",
+    "required": false,
+    "desc": "Create a private channel instead of a public one"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "SLACK_SEARCH_MESSAGES",
+  "app": "slack",
+  "category": "chat",
+  "split": "train",
+  "desc": "Workspace\u2011wide Slack message search with date ranges and filters",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "Search query supporting various modifiers for precise filtering: Location"
+   },
+   {
+    "name": "count",
+    "type": "int",
+    "required": false,
+    "desc": "Without auto_paginate: Number of messages per page (max 100)"
+   },
+   {
+    "name": "page",
+    "type": "int",
+    "required": false,
+    "desc": "Page number for manual pagination control"
+   },
+   {
+    "name": "sort",
+    "type": "str",
+    "required": false,
+    "desc": "Sort results by score (relevance) or timestamp (chronological)"
+   },
+   {
+    "name": "team_id",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the Slack workspace (team) to operate on"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "SLACK_LIST_ALL_CHANNELS",
+  "app": "slack",
+  "category": "chat",
+  "split": "train",
+  "desc": "Lists conversations available to the authenticated user, with filters for conversation type and archived status",
+  "params": [
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of channels to return per page (1"
+   },
+   {
+    "name": "types",
+    "type": "str",
+    "required": false,
+    "desc": "Comma-separated list of conversation types to include: public_channel (regular"
+   },
+   {
+    "name": "team_id",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the Slack workspace (team) to operate on"
+   },
+   {
+    "name": "exclude_archived",
+    "type": "bool",
+    "required": false,
+    "desc": "Excludes archived channels if true"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "SLACK_LIST_REMINDERS",
+  "app": "slack",
+  "category": "chat",
+  "split": "train",
+  "desc": "Lists all reminders with their details for the authenticated Slack user",
+  "params": [
+   {
+    "name": "team_id",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the Slack workspace (team) to operate on"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "SLACK_LIST_CONVERSATIONS",
+  "app": "slack",
+  "category": "chat",
+  "split": "train",
+  "desc": "Lists a page of Slack conversations for a specified user or the authenticated user, with filters",
+  "params": [
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of items to return per page"
+   },
+   {
+    "name": "user",
+    "type": "str",
+    "required": false,
+    "desc": "The ID of the user whose conversations will be"
+   },
+   {
+    "name": "types",
+    "type": "str",
+    "required": false,
+    "desc": "Comma-separated list of conversation types to include: public_channel (regular"
+   },
+   {
+    "name": "team_id",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the Slack workspace (team) to operate on"
+   },
+   {
+    "name": "exclude_archived",
+    "type": "bool",
+    "required": false,
+    "desc": "Set to true to exclude archived channels from the"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "SLACK_SEARCH_ALL",
+  "app": "slack",
+  "category": "chat",
+  "split": "train",
+  "desc": "Tool to search all messages and files",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "Search query supporting Slack search modifiers/booleans"
+   },
+   {
+    "name": "count",
+    "type": "int",
+    "required": false,
+    "desc": "Number of results per page"
+   },
+   {
+    "name": "page",
+    "type": "int",
+    "required": false,
+    "desc": "Page number of results to return"
+   },
+   {
+    "name": "sort",
+    "type": "str",
+    "required": false,
+    "desc": "Sort by score (relevance) or timestamp (chronological)"
+   },
+   {
+    "name": "team_id",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the Slack workspace (team) to operate on"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "SLACK_DELETE_REMINDER",
+  "app": "slack",
+  "category": "chat",
+  "split": "train",
+  "desc": "Deletes an existing Slack reminder, typically when it is no longer relevant or a task is",
+  "params": [
+   {
+    "name": "reminder",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the reminder to be deleted"
+   },
+   {
+    "name": "team_id",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the Slack workspace (team) to operate on"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "SLACK_DELETE_CANVAS",
+  "app": "slack",
+  "category": "chat",
+  "split": "train",
+  "desc": "Deletes a Slack Canvas permanently and irreversibly",
+  "params": [
+   {
+    "name": "canvas_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the canvas to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "SLACK_SCHEDULE_MESSAGE",
+  "app": "slack",
+  "category": "chat",
+  "split": "train",
+  "desc": "Schedules a message to a Slack channel, DM, or private group for a future time, up",
+  "params": [
+   {
+    "name": "channel",
+    "type": "str",
+    "required": false,
+    "desc": "Channel, private group, or DM channel ID (e.g., C1234567890)"
+   },
+   {
+    "name": "text",
+    "type": "str",
+    "required": false,
+    "desc": "This sends raw text only, use markdown_text field for"
+   },
+   {
+    "name": "markdown_text",
+    "type": "str",
+    "required": false,
+    "desc": "PREFERRED: Write your scheduled message in markdown for nicely"
+   },
+   {
+    "name": "parse",
+    "type": "str",
+    "required": false,
+    "desc": "Message text treatment: full for special formatting, none otherwise"
+   },
+   {
+    "name": "post_at",
+    "type": "str",
+    "required": false,
+    "desc": "Unix EPOCH timestamp (integer seconds since 1970-01-01 00:00:00 UTC)"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "SLACK_DELETE_FILE",
+  "app": "slack",
+  "category": "chat",
+  "split": "train",
+  "desc": "Permanently deletes an existing file from a Slack workspace using its unique file ID",
+  "params": [
+   {
+    "name": "file",
+    "type": "str",
+    "required": true,
+    "desc": "ID of the file to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "SLACK_ADD_STAR",
+  "app": "slack",
+  "category": "chat",
+  "split": "train",
+  "desc": "Adds a star to a Slack channel, file, file comment, or message for the authenticated user",
+  "params": [
+   {
+    "name": "channel",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the channel to star"
+   },
+   {
+    "name": "file",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the file to add a star to"
+   },
+   {
+    "name": "timestamp",
+    "type": "str",
+    "required": false,
+    "desc": "Timestamp of the message to add a star to"
+   },
+   {
+    "name": "file_comment",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the file comment to add a star"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DISCORD_LIST_MY_GUILDS",
+  "app": "discord",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Lists the current user's guilds, returning partial data for each",
+  "params": [
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Max number of guilds to return (1-200, default 200)"
+   },
+   {
+    "name": "after",
+    "type": "str",
+    "required": false,
+    "desc": "Get guilds after this guild ID"
+   },
+   {
+    "name": "before",
+    "type": "str",
+    "required": false,
+    "desc": "Get guilds before this guild ID"
+   },
+   {
+    "name": "with_counts",
+    "type": "bool",
+    "required": false,
+    "desc": "Include approximate member and presence counts for each guild"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DISCORD_INVITE_RESOLVE",
+  "app": "discord",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Tool to resolve and retrieve information about a Discord invite code",
+  "params": [
+   {
+    "name": "code",
+    "type": "str",
+    "required": true,
+    "desc": "The invite code to resolve (e.g., \"discord-api\" for vanity"
+   },
+   {
+    "name": "with_counts",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether to include approximate member counts (approximate_member_count and approximate_presence_count)"
+   },
+   {
+    "name": "with_expiration",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether to include the expiration date (expires_at) in the"
+   },
+   {
+    "name": "guild_scheduled_event_id",
+    "type": "str",
+    "required": false,
+    "desc": "The guild scheduled event ID to include with the"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DISCORD_GET_GUILD_TEMPLATE",
+  "app": "discord",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Tool to retrieve information about a Discord guild template using its unique template code",
+  "params": [
+   {
+    "name": "code",
+    "type": "str",
+    "required": true,
+    "desc": "The unique template code identifier for the guild template"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DISCORD_GET_GUILD_WIDGET",
+  "app": "discord",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Tool to retrieve the guild widget in JSON format",
+  "params": [
+   {
+    "name": "guild_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the guild (snowflake ID)"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DISCORD_LIST_SKU_SUBSCRIPTIONS",
+  "app": "discord",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Lists all subscriptions for a given SKU",
+  "params": [
+   {
+    "name": "sku_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the SKU to list subscriptions for"
+   },
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of subscriptions to return (1-100, default 100)"
+   },
+   {
+    "name": "after",
+    "type": "str",
+    "required": false,
+    "desc": "Retrieve subscriptions after this subscription ID for forward pagination"
+   },
+   {
+    "name": "before",
+    "type": "str",
+    "required": false,
+    "desc": "Retrieve subscriptions before this subscription ID for backward pagination"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DISCORD_GET_SKU_SUBSCRIPTION",
+  "app": "discord",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Retrieves a specific subscription by ID for a given SKU",
+  "params": [
+   {
+    "name": "sku_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the SKU the subscription belongs to"
+   },
+   {
+    "name": "subscription_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the subscription to retrieve"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DISCORD_GET_USER",
+  "app": "discord",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Retrieve information about a Discord user",
+  "params": [],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DISCORD_GET_GATEWAY",
+  "app": "discord",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Tool to retrieve a valid WebSocket (wss) URL for establishing a Gateway connection to Discord",
+  "params": [],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DISCORD_GET_APPLICATION_COMMAND_PERMISSIONS",
+  "app": "discord",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Retrieves the permissions for a specific application command in a guild",
+  "params": [
+   {
+    "name": "guild_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier (snowflake ID) of the guild"
+   },
+   {
+    "name": "command_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier (snowflake ID) of the application command"
+   },
+   {
+    "name": "application_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier (snowflake ID) of the application"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TELEGRAM_SEND_MESSAGE",
+  "app": "telegram",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Send a text message to a Telegram chat using the Bot API",
+  "params": [
+   {
+    "name": "chat_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier for the target chat or username of"
+   },
+   {
+    "name": "text",
+    "type": "str",
+    "required": true,
+    "desc": "Text of the message to be sent, 1-4096 characters"
+   },
+   {
+    "name": "parse_mode",
+    "type": "str",
+    "required": false,
+    "desc": "Mode for parsing entities in the message text"
+   },
+   {
+    "name": "reply_markup",
+    "type": "str",
+    "required": false,
+    "desc": "JSON-serialized object for an inline keyboard, custom reply keyboard"
+   },
+   {
+    "name": "reply_to_message_id",
+    "type": "int",
+    "required": false,
+    "desc": "If the message is a reply, ID of the"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "TELEGRAM_DELETE_MESSAGE",
+  "app": "telegram",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Delete a message, including eligible service messages",
+  "params": [
+   {
+    "name": "chat_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier for the target chat or username of"
+   },
+   {
+    "name": "message_id",
+    "type": "int",
+    "required": true,
+    "desc": "Identifier of the message to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "TELEGRAM_GET_UPDATES",
+  "app": "telegram",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Receive incoming bot updates using long polling",
+  "params": [
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Limits the number of updates to be retrieved"
+   },
+   {
+    "name": "offset",
+    "type": "int",
+    "required": false,
+    "desc": "Identifier of the first update to be returned"
+   },
+   {
+    "name": "timeout",
+    "type": "int",
+    "required": false,
+    "desc": "Timeout in seconds for long polling"
+   },
+   {
+    "name": "allowed_updates",
+    "type": "list",
+    "required": false,
+    "desc": "A JSON-serialized list of the update types you want"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TELEGRAM_SEND_DOCUMENT",
+  "app": "telegram",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Send a general file to a Telegram chat using the Bot API",
+  "params": [
+   {
+    "name": "chat_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier for the target chat or username of"
+   },
+   {
+    "name": "document",
+    "type": "str",
+    "required": true,
+    "desc": "File to send"
+   },
+   {
+    "name": "caption",
+    "type": "str",
+    "required": false,
+    "desc": "Document caption (may also be used when resending documents"
+   },
+   {
+    "name": "thumbnail",
+    "type": "str",
+    "required": false,
+    "desc": "Thumbnail of the file sent"
+   },
+   {
+    "name": "parse_mode",
+    "type": "str",
+    "required": false,
+    "desc": "Mode for parsing entities in the document caption"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "TELEGRAM_SEND_LOCATION",
+  "app": "telegram",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Send point on the map location to a Telegram chat using the Bot API",
+  "params": [
+   {
+    "name": "chat_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier for the target chat or username of"
+   },
+   {
+    "name": "latitude",
+    "type": "num",
+    "required": true,
+    "desc": "Latitude of the location"
+   },
+   {
+    "name": "longitude",
+    "type": "num",
+    "required": true,
+    "desc": "Longitude of the location"
+   },
+   {
+    "name": "heading",
+    "type": "int",
+    "required": false,
+    "desc": "For live locations, a direction in which the user"
+   },
+   {
+    "name": "live_period",
+    "type": "int",
+    "required": false,
+    "desc": "Period in seconds for which the location will be"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "TELEGRAM_SEND_PHOTO",
+  "app": "telegram",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Send a photo to a Telegram chat using the Bot API",
+  "params": [
+   {
+    "name": "chat_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier for the target chat or username of"
+   },
+   {
+    "name": "photo",
+    "type": "str",
+    "required": true,
+    "desc": "Photo to send"
+   },
+   {
+    "name": "caption",
+    "type": "str",
+    "required": false,
+    "desc": "Photo caption (may also be used when resending photos"
+   },
+   {
+    "name": "parse_mode",
+    "type": "str",
+    "required": false,
+    "desc": "Mode for parsing entities in the photo caption"
+   },
+   {
+    "name": "reply_markup",
+    "type": "str",
+    "required": false,
+    "desc": "JSON-serialized object for an inline keyboard, custom reply keyboard"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "TELEGRAM_SEND_POLL",
+  "app": "telegram",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Send a native poll to a Telegram chat using the Bot API, with a question and",
+  "params": [
+   {
+    "name": "chat_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier for the target chat or username of"
+   },
+   {
+    "name": "options",
+    "type": "list",
+    "required": true,
+    "desc": "A list of answer options, 2-10 strings 1-100 characters"
+   },
+   {
+    "name": "question",
+    "type": "str",
+    "required": true,
+    "desc": "Poll question, 1-300 characters"
+   },
+   {
+    "name": "type",
+    "type": "str",
+    "required": false,
+    "desc": "Poll type, defaults to 'regular'"
+   },
+   {
+    "name": "is_closed",
+    "type": "bool",
+    "required": false,
+    "desc": "Pass True, if the poll needs to be immediately"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "TELEGRAM_GET_CHAT",
+  "app": "telegram",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Get up to date information about the chat (current name of the user for one-on-one conversations",
+  "params": [
+   {
+    "name": "chat_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier for the target chat or username of"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TELEGRAM_GET_CHAT_MEMBER",
+  "app": "telegram",
+  "category": "chat",
+  "split": "heldout",
+  "desc": "Get a chat member's status/role (including the bot itself) to preflight permissions and troubleshoot 403/empty-history issues",
+  "params": [
+   {
+    "name": "chat_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier for the target chat or username of"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLEDRIVE_CREATE_FOLDER",
+  "app": "googledrive",
+  "category": "files",
+  "split": "train",
+  "desc": "Creates a Google Drive folder, optionally inside an existing parent specified by ID or exact name",
+  "params": [
+   {
+    "name": "name",
+    "type": "str",
+    "required": true,
+    "desc": "Name for the new folder"
+   },
+   {
+    "name": "parent_id",
+    "type": "str",
+    "required": false,
+    "desc": "ID or exact name of an EXISTING parent folder"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLEDRIVE_FIND_FILE",
+  "app": "googledrive",
+  "category": "files",
+  "split": "train",
+  "desc": "The comprehensive Google Drive search tool that handles all file and folder discovery needs",
+  "params": [
+   {
+    "name": "q",
+    "type": "str",
+    "required": true,
+    "desc": "Query string to filter file results"
+   },
+   {
+    "name": "folder_id",
+    "type": "str",
+    "required": false,
+    "desc": "ID of a specific folder to search within"
+   },
+   {
+    "name": "pageSize",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of files to return per page"
+   },
+   {
+    "name": "orderBy",
+    "type": "str",
+    "required": false,
+    "desc": "Comma-separated sort keys"
+   },
+   {
+    "name": "include_labels",
+    "type": "str",
+    "required": false,
+    "desc": "A comma-separated list of label IDs to include in"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLEDRIVE_FIND_FOLDER",
+  "app": "googledrive",
+  "category": "files",
+  "split": "train",
+  "desc": "Finds one page of Google Drive folders by name and optional parent",
+  "params": [
+   {
+    "name": "page_size",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of folders to return in this"
+   },
+   {
+    "name": "starred",
+    "type": "bool",
+    "required": false,
+    "desc": "Set to true to search for folders that are"
+   },
+   {
+    "name": "name_exact",
+    "type": "str",
+    "required": false,
+    "desc": "The exact name of the folder to search for"
+   },
+   {
+    "name": "name_contains",
+    "type": "str",
+    "required": false,
+    "desc": "A substring to search for within folder names as"
+   },
+   {
+    "name": "modified_after",
+    "type": "str",
+    "required": false,
+    "desc": "Search for folders modified after a specific date and"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLEDRIVE_DELETE_CHILD",
+  "app": "googledrive",
+  "category": "files",
+  "split": "train",
+  "desc": "Tool to remove a child from a folder using Google Drive API v2",
+  "params": [
+   {
+    "name": "childId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the child"
+   },
+   {
+    "name": "folderId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the folder"
+   },
+   {
+    "name": "alt",
+    "type": "str",
+    "required": false,
+    "desc": "Data format for response"
+   },
+   {
+    "name": "key",
+    "type": "str",
+    "required": false,
+    "desc": "API key"
+   },
+   {
+    "name": "xgafv",
+    "type": "str",
+    "required": false,
+    "desc": "V1 error format enum"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GOOGLEDRIVE_DELETE_PROPERTY",
+  "app": "googledrive",
+  "category": "files",
+  "split": "train",
+  "desc": "Delete a custom property from a Google Drive file using API v2",
+  "params": [
+   {
+    "name": "fileId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the file"
+   },
+   {
+    "name": "propertyKey",
+    "type": "str",
+    "required": true,
+    "desc": "The key of the property to delete"
+   },
+   {
+    "name": "alt",
+    "type": "str",
+    "required": false,
+    "desc": "Data format for response"
+   },
+   {
+    "name": "key",
+    "type": "str",
+    "required": false,
+    "desc": "API key"
+   },
+   {
+    "name": "xgafv",
+    "type": "str",
+    "required": false,
+    "desc": "V1 error format values"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GOOGLEDRIVE_ADD_PARENT",
+  "app": "googledrive",
+  "category": "files",
+  "split": "train",
+  "desc": "Tool to add a parent folder for a file using Google Drive API v2",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the parent folder to add"
+   },
+   {
+    "name": "fileId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the file to add a parent"
+   },
+   {
+    "name": "supportsAllDrives",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether the requesting application supports both My Drives and"
+   },
+   {
+    "name": "supportsTeamDrives",
+    "type": "bool",
+    "required": false,
+    "desc": "Deprecated: Use supportsAllDrives instead"
+   },
+   {
+    "name": "enforceSingleParent",
+    "type": "bool",
+    "required": false,
+    "desc": "Deprecated: Adding files to multiple folders is no longer"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLEDRIVE_DELETE_DRIVE",
+  "app": "googledrive",
+  "category": "files",
+  "split": "train",
+  "desc": "Tool to permanently delete a shared drive",
+  "params": [
+   {
+    "name": "driveId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the shared drive"
+   },
+   {
+    "name": "allowItemDeletion",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether any items inside the shared drive should also"
+   },
+   {
+    "name": "useDomainAdminAccess",
+    "type": "bool",
+    "required": false,
+    "desc": "Issue the request as a domain administrator"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GOOGLEDRIVE_GET_REVISION",
+  "app": "googledrive",
+  "category": "files",
+  "split": "train",
+  "desc": "Tool to get a specific revision's metadata (name, modifiedTime, keepForever, etc.) by revision ID",
+  "params": [
+   {
+    "name": "file_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the file"
+   },
+   {
+    "name": "revision_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the revision"
+   },
+   {
+    "name": "acknowledge_abuse",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether the user is acknowledging the risk of downloading"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLEDRIVE_GET_SPREADSHEET",
+  "app": "googledrive",
+  "category": "files",
+  "split": "train",
+  "desc": "Retrieve a Google Spreadsheet's structure, metadata, and selected grid data",
+  "params": [
+   {
+    "name": "spreadsheet_id",
+    "type": "str",
+    "required": true,
+    "desc": "The spreadsheet ID from its Google Sheets URL, not"
+   },
+   {
+    "name": "ranges",
+    "type": "list",
+    "required": false,
+    "desc": "Up to 10 A1 ranges whose sheet data should"
+   },
+   {
+    "name": "include_grid_data",
+    "type": "bool",
+    "required": false,
+    "desc": "Include cell grid data for the requested ranges"
+   },
+   {
+    "name": "exclude_tables_in_banded_ranges",
+    "type": "bool",
+    "required": false,
+    "desc": "Exclude table data embedded in banded ranges from the"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DROPBOX_CREATE_FOLDER",
+  "app": "dropbox",
+  "category": "files",
+  "split": "heldout",
+  "desc": "Tool to create a new folder at a specified path in Dropbox",
+  "params": [
+   {
+    "name": "path",
+    "type": "str",
+    "required": true,
+    "desc": "Path in the user's Dropbox to create the folder"
+   },
+   {
+    "name": "autorename",
+    "type": "bool",
+    "required": false,
+    "desc": "If there's a conflict, have the Dropbox server try"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DROPBOX_SEARCH_FILE_OR_FOLDER",
+  "app": "dropbox",
+  "category": "files",
+  "split": "heldout",
+  "desc": "Search Dropbox files and folders by name or content, optionally scoped to a path, with cursor",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "The search string"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DROPBOX_LIST_FILES_IN_FOLDER",
+  "app": "dropbox",
+  "category": "files",
+  "split": "heldout",
+  "desc": "Tool to list files and folders in a specified Dropbox directory",
+  "params": [
+   {
+    "name": "path",
+    "type": "str",
+    "required": false,
+    "desc": "The folder path (e.g., \"/europe/invoices\") or folder ID (e.g"
+   },
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of results to return per request"
+   },
+   {
+    "name": "recursive",
+    "type": "bool",
+    "required": false,
+    "desc": "If true, recursively lists contents of nested subfolders"
+   },
+   {
+    "name": "include_deleted",
+    "type": "bool",
+    "required": false,
+    "desc": "If true, includes deleted (but potentially recoverable) files and"
+   },
+   {
+    "name": "include_media_info",
+    "type": "bool",
+    "required": false,
+    "desc": "If true, includes media metadata (e.g., dimensions, location) for"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DROPBOX_SHARE_FOLDER",
+  "app": "dropbox",
+  "category": "files",
+  "split": "heldout",
+  "desc": "Tool to share a folder with collaborators in Dropbox",
+  "params": [
+   {
+    "name": "path",
+    "type": "str",
+    "required": true,
+    "desc": "The path to the folder to share"
+   },
+   {
+    "name": "force_async",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether to force the share to happen asynchronously"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "DROPBOX_GET_THUMBNAIL",
+  "app": "dropbox",
+  "category": "files",
+  "split": "heldout",
+  "desc": "Tool to get a thumbnail for an image file",
+  "params": [
+   {
+    "name": "path",
+    "type": "str",
+    "required": true,
+    "desc": "The path to the image file you want to"
+   },
+   {
+    "name": "size",
+    "type": "str",
+    "required": false,
+    "desc": "The size for the thumbnail image"
+   },
+   {
+    "name": "mode",
+    "type": "str",
+    "required": false,
+    "desc": "How to resize and crop the image"
+   },
+   {
+    "name": "format",
+    "type": "str",
+    "required": false,
+    "desc": "The format for the thumbnail image"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DROPBOX_FILES_SEARCH",
+  "app": "dropbox",
+  "category": "files",
+  "split": "heldout",
+  "desc": "Tool to search for files and folders in Dropbox by name or content",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "The string to search for"
+   },
+   {
+    "name": "path",
+    "type": "str",
+    "required": false,
+    "desc": "The path in the user's Dropbox to search"
+   },
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of search results to return"
+   },
+   {
+    "name": "mode",
+    "type": "str",
+    "required": false,
+    "desc": "Search mode for Dropbox files search"
+   },
+   {
+    "name": "start",
+    "type": "int",
+    "required": false,
+    "desc": "The starting index within the search results (used for"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DROPBOX_GET_METADATA",
+  "app": "dropbox",
+  "category": "files",
+  "split": "heldout",
+  "desc": "Fetch metadata for a Dropbox file or folder by path, including identifiers, type and attributes, without",
+  "params": [
+   {
+    "name": "path",
+    "type": "str",
+    "required": true,
+    "desc": "The path of a file or folder on Dropbox"
+   },
+   {
+    "name": "include_deleted",
+    "type": "bool",
+    "required": false,
+    "desc": "If true, DeletedMetadata will be returned for deleted files"
+   },
+   {
+    "name": "include_media_info",
+    "type": "bool",
+    "required": false,
+    "desc": "If true, FileMetadata.media_info is set for photo and video"
+   },
+   {
+    "name": "include_has_explicit_shared_members",
+    "type": "bool",
+    "required": false,
+    "desc": "If true, the result will include a flag indicating"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DROPBOX_GET_ACCOUNT",
+  "app": "dropbox",
+  "category": "files",
+  "split": "heldout",
+  "desc": "Tool to get information about a user's Dropbox account using their account ID",
+  "params": [
+   {
+    "name": "account_id",
+    "type": "str",
+    "required": true,
+    "desc": "A user's account identifier"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "DROPBOX_DELETE_FILE",
+  "app": "dropbox",
+  "category": "files",
+  "split": "heldout",
+  "desc": "Tool to delete a file or folder at the specified path in Dropbox",
+  "params": [
+   {
+    "name": "path",
+    "type": "str",
+    "required": true,
+    "desc": "Path in the user's Dropbox to delete"
+   },
+   {
+    "name": "parent_rev",
+    "type": "str",
+    "required": false,
+    "desc": "Perform delete if given 'rev' matches the existing file's"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GOOGLEDOCS_CREATE_DOCUMENT",
+  "app": "googledocs",
+  "category": "docs",
+  "split": "train",
+  "desc": "Creates a new Google Docs document using the provided title as filename and inserts the initial",
+  "params": [
+   {
+    "name": "title",
+    "type": "str",
+    "required": true,
+    "desc": "Title for the new document, used as its filename"
+   },
+   {
+    "name": "text",
+    "type": "str",
+    "required": false,
+    "desc": "Optional initial text content to insert at the beginning"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLEDOCS_CREATE_DOCUMENT_MARKDOWN",
+  "app": "googledocs",
+  "category": "docs",
+  "split": "train",
+  "desc": "Creates a new Google Docs document, optionally initializing it with a title and content provided as",
+  "params": [
+   {
+    "name": "title",
+    "type": "str",
+    "required": true,
+    "desc": "The title for the new Google Docs document"
+   },
+   {
+    "name": "markdown_text",
+    "type": "str",
+    "required": false,
+    "desc": "The initial content for the document, formatted as Markdown"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLEDOCS_DELETE_FOOTER",
+  "app": "googledocs",
+  "category": "docs",
+  "split": "train",
+  "desc": "Tool to delete a footer from a Google Document",
+  "params": [
+   {
+    "name": "footer_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the footer to delete"
+   },
+   {
+    "name": "document_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the document to delete the footer"
+   },
+   {
+    "name": "tab_id",
+    "type": "str",
+    "required": false,
+    "desc": "The tab that contains the footer to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GOOGLEDOCS_COPY_DOCUMENT",
+  "app": "googledocs",
+  "category": "docs",
+  "split": "train",
+  "desc": "Tool to create a copy of an existing Google Document",
+  "params": [
+   {
+    "name": "document_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the Google Document to be copied"
+   },
+   {
+    "name": "title",
+    "type": "str",
+    "required": false,
+    "desc": "The title for the new copied document"
+   },
+   {
+    "name": "include_shared_drives",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether to support copying documents from shared drives"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLEDOCS_SEARCH_DOCUMENTS",
+  "app": "googledocs",
+  "category": "docs",
+  "split": "train",
+  "desc": "Search for Google Documents using various filters including name, content, date ranges, and more",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": false,
+    "desc": "Search query to filter documents"
+   },
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of documents to return per page (1-100)"
+   },
+   {
+    "name": "order_by",
+    "type": "str",
+    "required": false,
+    "desc": "Order results by field"
+   },
+   {
+    "name": "starred_only",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether to return only starred documents"
+   },
+   {
+    "name": "created_after",
+    "type": "str",
+    "required": false,
+    "desc": "Return documents created after this date"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLEDOCS_DELETE_HEADER",
+  "app": "googledocs",
+  "category": "docs",
+  "split": "train",
+  "desc": "Deletes a specified header by ID from a Google Document, optionally targeting a document tab",
+  "params": [
+   {
+    "name": "header_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the header to delete"
+   },
+   {
+    "name": "document_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the document from which to delete"
+   },
+   {
+    "name": "tab_id",
+    "type": "str",
+    "required": false,
+    "desc": "The tab containing the header to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GOOGLEDOCS_CREATE_HEADER",
+  "app": "googledocs",
+  "category": "docs",
+  "split": "train",
+  "desc": "Creates a header in a Google Document, optionally for a specified section, and can add text",
+  "params": [
+   {
+    "name": "documentId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the document to create the header"
+   },
+   {
+    "name": "text",
+    "type": "str",
+    "required": false,
+    "desc": "Optional text content to add to the header after"
+   },
+   {
+    "name": "type",
+    "type": "str",
+    "required": false,
+    "desc": "The type of header to create"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLEDOCS_CREATE_FOOTER",
+  "app": "googledocs",
+  "category": "docs",
+  "split": "train",
+  "desc": "Creates a footer in a Google document for the specified type and optional section",
+  "params": [
+   {
+    "name": "type",
+    "type": "str",
+    "required": true,
+    "desc": "The type of footer to create"
+   },
+   {
+    "name": "document_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the document to create the footer"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLEDOCS_DELETE_TAB",
+  "app": "googledocs",
+  "category": "docs",
+  "split": "train",
+  "desc": "Deletes a tab from a Google Document",
+  "params": [
+   {
+    "name": "tab_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the tab to delete"
+   },
+   {
+    "name": "document_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the document containing the tab to"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "NOTION_CREATE_NOTION_PAGE",
+  "app": "notion",
+  "category": "docs",
+  "split": "train",
+  "desc": "Creates a new page in a Notion workspace under a specified parent page or database",
+  "params": [
+   {
+    "name": "title",
+    "type": "str",
+    "required": true,
+    "desc": "The title of the new page to be created"
+   },
+   {
+    "name": "parent_id",
+    "type": "str",
+    "required": true,
+    "desc": "CRITICAL: Must be either: 1) A valid Notion UUID"
+   },
+   {
+    "name": "icon",
+    "type": "str",
+    "required": false,
+    "desc": "An emoji to be used as the icon for"
+   },
+   {
+    "name": "cover",
+    "type": "str",
+    "required": false,
+    "desc": "The URL of an image to be used as"
+   },
+   {
+    "name": "markdown",
+    "type": "str",
+    "required": false,
+    "desc": "Page content as Notion-flavored Markdown"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "NOTION_SEARCH_NOTION_PAGE",
+  "app": "notion",
+  "category": "docs",
+  "split": "train",
+  "desc": "Search Notion pages and databases by title, with an object-type filter that defaults to pages",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": false,
+    "desc": "Text to search for in page and database titles"
+   },
+   {
+    "name": "page_size",
+    "type": "int",
+    "required": false,
+    "desc": "The number of items to include in the response"
+   },
+   {
+    "name": "direction",
+    "type": "str",
+    "required": false,
+    "desc": "Specifies the sort direction for the results"
+   },
+   {
+    "name": "timestamp",
+    "type": "str",
+    "required": false,
+    "desc": "The timestamp field to sort the results by"
+   },
+   {
+    "name": "filter_value",
+    "type": "str",
+    "required": false,
+    "desc": "Filters results by object type: 'page' or 'database'"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "NOTION_DELETE_VIEW",
+  "app": "notion",
+  "category": "docs",
+  "split": "train",
+  "desc": "Delete a Notion view",
+  "params": [
+   {
+    "name": "view_id",
+    "type": "str",
+    "required": true,
+    "desc": "ID of the Notion view to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "NOTION_UPDATE_BLOCK",
+  "app": "notion",
+  "category": "docs",
+  "split": "train",
+  "desc": "Updates existing Notion block's text content",
+  "params": [
+   {
+    "name": "content",
+    "type": "str",
+    "required": true,
+    "desc": "The new text content for the block"
+   },
+   {
+    "name": "block_id",
+    "type": "str",
+    "required": true,
+    "desc": "Identifier of the Notion block to be updated"
+   },
+   {
+    "name": "language",
+    "type": "str",
+    "required": false,
+    "desc": "Programming language for code blocks"
+   },
+   {
+    "name": "block_type",
+    "type": "str",
+    "required": false,
+    "desc": "The type of the block being updated"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "NOTION_MOVE_PAGE",
+  "app": "notion",
+  "category": "docs",
+  "split": "train",
+  "desc": "Moves a Notion page to a new parent page or database data source",
+  "params": [
+   {
+    "name": "parent",
+    "type": "str",
+    "required": true,
+    "desc": "Parent destination for the page"
+   },
+   {
+    "name": "page_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the page to move"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "NOTION_GET_PLUGIN",
+  "app": "notion",
+  "category": "docs",
+  "split": "train",
+  "desc": "Get a temporary download URL for one Notion Agent Skills plugin",
+  "params": [
+   {
+    "name": "plugin_id",
+    "type": "str",
+    "required": true,
+    "desc": "Plugin ID returned by NOTION_LIST_PLUGINS"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "NOTION_UPDATE_PAGE",
+  "app": "notion",
+  "category": "docs",
+  "split": "train",
+  "desc": "Update page properties, icon, cover, or archive status",
+  "params": [
+   {
+    "name": "page_id",
+    "type": "str",
+    "required": true,
+    "desc": "Identifier for the Notion page to be updated"
+   },
+   {
+    "name": "archived",
+    "type": "bool",
+    "required": false,
+    "desc": "Set to true to archive (trash) the page, false"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "NOTION_DELETE_BLOCK",
+  "app": "notion",
+  "category": "docs",
+  "split": "train",
+  "desc": "Archives a Notion block, page, or database by ID, moving it to Trash for possible later",
+  "params": [
+   {
+    "name": "block_id",
+    "type": "str",
+    "required": true,
+    "desc": "Identifier of the block, page, or database to be"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "NOTION_FETCH_DATABASE",
+  "app": "notion",
+  "category": "docs",
+  "split": "train",
+  "desc": "Fetches a Notion database's structural metadata (properties, title, etc.) via its database_id, not the data entries",
+  "params": [
+   {
+    "name": "database_id",
+    "type": "str",
+    "required": true,
+    "desc": "Required"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLESHEETS_SEARCH_SPREADSHEETS",
+  "app": "googlesheets",
+  "category": "docs",
+  "split": "train",
+  "desc": "Search for Google spreadsheets accessible in Drive by name, content, dates, and other filters, including starred",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": false,
+    "desc": "Search query to filter spreadsheets"
+   },
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of spreadsheets to return (1-1000)"
+   },
+   {
+    "name": "order_by",
+    "type": "str",
+    "required": false,
+    "desc": "Sort order (comma-separated list for multi-field sorting)"
+   },
+   {
+    "name": "search_type",
+    "type": "str",
+    "required": false,
+    "desc": "How to search: 'name' searches filenames only (prefix matching"
+   },
+   {
+    "name": "starred_only",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether to return only starred spreadsheets"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLESHEETS_CREATE_GOOGLE_SHEET1",
+  "app": "googlesheets",
+  "category": "docs",
+  "split": "train",
+  "desc": "Creates a new Google Spreadsheet in Drive with an optional title and folder ID or exact",
+  "params": [
+   {
+    "name": "title",
+    "type": "str",
+    "required": true,
+    "desc": "The title for the new Google Sheet"
+   },
+   {
+    "name": "folder_id",
+    "type": "str",
+    "required": false,
+    "desc": "Google Drive folder ID where the spreadsheet should be"
+   },
+   {
+    "name": "folder_name",
+    "type": "str",
+    "required": false,
+    "desc": "Google Drive folder name where the spreadsheet should be"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLESHEETS_DELETE_DIMENSION",
+  "app": "googlesheets",
+  "category": "docs",
+  "split": "train",
+  "desc": "Tool to delete specified rows or columns from a sheet in a Google Spreadsheet",
+  "params": [
+   {
+    "name": "spreadsheet_id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the spreadsheet"
+   },
+   {
+    "name": "sheet_id",
+    "type": "int",
+    "required": false,
+    "desc": "The unique numeric ID of the sheet (not the"
+   },
+   {
+    "name": "dimension",
+    "type": "str",
+    "required": false,
+    "desc": "The dimension to delete (ROWS or COLUMNS)"
+   },
+   {
+    "name": "end_index",
+    "type": "int",
+    "required": false,
+    "desc": "The zero-based end index of the range to delete"
+   },
+   {
+    "name": "sheet_name",
+    "type": "str",
+    "required": false,
+    "desc": "The name/title of the sheet from which to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GOOGLESHEETS_MOVE_CHART",
+  "app": "googlesheets",
+  "category": "docs",
+  "split": "train",
+  "desc": "Move or resize an existing chart on a Google Sheets spreadsheet",
+  "params": [
+   {
+    "name": "chart_id",
+    "type": "int",
+    "required": true,
+    "desc": "The unique numeric identifier of the chart to move"
+   },
+   {
+    "name": "spreadsheet_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the Google Sheets spreadsheet containing"
+   },
+   {
+    "name": "new_sheet",
+    "type": "bool",
+    "required": false,
+    "desc": "Set to true to move the chart to a"
+   },
+   {
+    "name": "width_pixels",
+    "type": "int",
+    "required": false,
+    "desc": "Width of the chart in pixels"
+   },
+   {
+    "name": "height_pixels",
+    "type": "int",
+    "required": false,
+    "desc": "Height of the chart in pixels"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLESHEETS_CREATE_CHART",
+  "app": "googlesheets",
+  "category": "docs",
+  "split": "train",
+  "desc": "Create a chart in a Google Sheets spreadsheet using a specified data range and chart type",
+  "params": [
+   {
+    "name": "sheet_id",
+    "type": "int",
+    "required": true,
+    "desc": "The numeric sheetId (not the sheet name/title) of the"
+   },
+   {
+    "name": "chart_type",
+    "type": "str",
+    "required": true,
+    "desc": "Type of chart to create"
+   },
+   {
+    "name": "data_range",
+    "type": "str",
+    "required": true,
+    "desc": "A single contiguous range of data for the chart"
+   },
+   {
+    "name": "spreadsheet_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the Google Sheets spreadsheet where"
+   },
+   {
+    "name": "title",
+    "type": "str",
+    "required": false,
+    "desc": "Optional title for the chart"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLESHEETS_DELETE_SHEET",
+  "app": "googlesheets",
+  "category": "docs",
+  "split": "train",
+  "desc": "Tool to delete a sheet (worksheet) from a spreadsheet",
+  "params": [
+   {
+    "name": "sheetId",
+    "type": "int",
+    "required": true,
+    "desc": "The ID of the sheet to delete"
+   },
+   {
+    "name": "spreadsheetId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the spreadsheet from which to delete"
+   },
+   {
+    "name": "responseRanges",
+    "type": "list",
+    "required": false,
+    "desc": "Limits which ranges are returned when includeSpreadsheetInResponse is true"
+   },
+   {
+    "name": "responseIncludeGridData",
+    "type": "bool",
+    "required": false,
+    "desc": "True if grid data should be returned in the"
+   },
+   {
+    "name": "includeSpreadsheetInResponse",
+    "type": "bool",
+    "required": false,
+    "desc": "Determines if the spreadsheet resource should be returned in"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GOOGLESHEETS_LIST_CHARTS",
+  "app": "googlesheets",
+  "category": "docs",
+  "split": "train",
+  "desc": "Lists all charts in a Google Sheets spreadsheet across all sheets, returning chart_id, sheet metadata, chart",
+  "params": [
+   {
+    "name": "spreadsheet_id",
+    "type": "str",
+    "required": true,
+    "desc": "Required"
+   },
+   {
+    "name": "chart_id",
+    "type": "int",
+    "required": false,
+    "desc": "Optional"
+   },
+   {
+    "name": "sheet_id",
+    "type": "int",
+    "required": false,
+    "desc": "Optional"
+   },
+   {
+    "name": "include_spec",
+    "type": "bool",
+    "required": false,
+    "desc": "When true, include the full ChartSpec dictionary for each"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GOOGLESHEETS_DELETE_CHART",
+  "app": "googlesheets",
+  "category": "docs",
+  "split": "train",
+  "desc": "Delete an existing chart from a Google Sheets spreadsheet",
+  "params": [
+   {
+    "name": "chart_id",
+    "type": "int",
+    "required": true,
+    "desc": "The unique numeric identifier of the chart to delete"
+   },
+   {
+    "name": "spreadsheet_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the Google Sheets spreadsheet containing"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GOOGLESHEETS_FIND_REPLACE",
+  "app": "googlesheets",
+  "category": "docs",
+  "split": "train",
+  "desc": "Finds and replaces text across cells in a Google Spreadsheet, scoped to a sheet, range, or",
+  "params": [
+   {
+    "name": "find",
+    "type": "str",
+    "required": true,
+    "desc": "The text to find"
+   },
+   {
+    "name": "replace",
+    "type": "str",
+    "required": true,
+    "desc": "The text to replace the found instances with"
+   },
+   {
+    "name": "spreadsheetId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the spreadsheet to update"
+   },
+   {
+    "name": "range",
+    "type": "str",
+    "required": false,
+    "desc": "A1 notation range string to search within (e.g., 'A1:B10'"
+   },
+   {
+    "name": "sheetId",
+    "type": "int",
+    "required": false,
+    "desc": "The numeric ID of the sheet to search the"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "AIRTABLE_LIST_RECORDS",
+  "app": "airtable",
+  "category": "docs",
+  "split": "heldout",
+  "desc": "Tool to list records from an Airtable table with filtering, sorting, and pagination",
+  "params": [
+   {
+    "name": "baseId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the Airtable base"
+   },
+   {
+    "name": "tableIdOrName",
+    "type": "str",
+    "required": true,
+    "desc": "The ID or name of the table within the"
+   },
+   {
+    "name": "pageSize",
+    "type": "int",
+    "required": false,
+    "desc": "Number of records to return per page"
+   },
+   {
+    "name": "view",
+    "type": "str",
+    "required": false,
+    "desc": "The name or ID of a view to use"
+   },
+   {
+    "name": "offset",
+    "type": "str",
+    "required": false,
+    "desc": "Opaque pagination cursor token returned in the 'offset' field"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "AIRTABLE_DELETE_COMMENT",
+  "app": "airtable",
+  "category": "docs",
+  "split": "heldout",
+  "desc": "Tool to delete a comment from a record in an Airtable table",
+  "params": [
+   {
+    "name": "baseId",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the Airtable base from which"
+   },
+   {
+    "name": "recordId",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the record within the specified"
+   },
+   {
+    "name": "rowCommentId",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the comment to be deleted"
+   },
+   {
+    "name": "tableIdOrName",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier (ID) or name of the table"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "AIRTABLE_LIST_BASES",
+  "app": "airtable",
+  "category": "docs",
+  "split": "heldout",
+  "desc": "Lists a page of Airtable bases accessible to the authenticated token",
+  "params": [
+   {
+    "name": "offset",
+    "type": "str",
+    "required": false,
+    "desc": "Pagination token for retrieving the next page of results"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "AIRTABLE_CREATE_FIELD",
+  "app": "airtable",
+  "category": "docs",
+  "split": "heldout",
+  "desc": "Creates a new field within a specified table in an Airtable base",
+  "params": [
+   {
+    "name": "name",
+    "type": "str",
+    "required": true,
+    "desc": "REQUIRED"
+   },
+   {
+    "name": "baseId",
+    "type": "str",
+    "required": true,
+    "desc": "REQUIRED"
+   },
+   {
+    "name": "tableIdOrName",
+    "type": "str",
+    "required": true,
+    "desc": "The ID or name of the table within the"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "An optional description for the new field"
+   },
+   {
+    "name": "type",
+    "type": "str",
+    "required": false,
+    "desc": "The type for the new field"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "AIRTABLE_LIST_COMMENTS",
+  "app": "airtable",
+  "category": "docs",
+  "split": "heldout",
+  "desc": "Tool to list comments on a specific Airtable record",
+  "params": [
+   {
+    "name": "baseId",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the Airtable base from which"
+   },
+   {
+    "name": "recordId",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the record for which comments"
+   },
+   {
+    "name": "tableIdOrName",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier or name of the table within"
+   },
+   {
+    "name": "pageSize",
+    "type": "int",
+    "required": false,
+    "desc": "The number of comments to return per page"
+   },
+   {
+    "name": "offset",
+    "type": "str",
+    "required": false,
+    "desc": "Pagination token to retrieve the next page of comments"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "AIRTABLE_UPDATE_TABLE",
+  "app": "airtable",
+  "category": "docs",
+  "split": "heldout",
+  "desc": "Updates the name, description, and/or date dependency settings of a table in Airtable",
+  "params": [
+   {
+    "name": "baseId",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the Airtable base containing the"
+   },
+   {
+    "name": "tableIdOrName",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier or name of the table to"
+   },
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "The new name for the table"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "The new description for the table"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "AIRTABLE_UPDATE_FIELD",
+  "app": "airtable",
+  "category": "docs",
+  "split": "heldout",
+  "desc": "Updates a field's name or description in an Airtable table",
+  "params": [
+   {
+    "name": "baseId",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the Airtable base containing the"
+   },
+   {
+    "name": "fieldId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the field to update"
+   },
+   {
+    "name": "tableId",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the table containing the field to"
+   },
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "The new name for the field"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "The new description for the field"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "AIRTABLE_CREATE_COMMENT",
+  "app": "airtable",
+  "category": "docs",
+  "split": "heldout",
+  "desc": "Tool to create a comment on a specific Airtable record",
+  "params": [
+   {
+    "name": "text",
+    "type": "str",
+    "required": true,
+    "desc": "The content of the comment"
+   },
+   {
+    "name": "baseId",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the Airtable base"
+   },
+   {
+    "name": "recordId",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the record on which the"
+   },
+   {
+    "name": "tableIdOrName",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier (typically starting with 'tbl') or the"
+   },
+   {
+    "name": "parentCommentId",
+    "type": "str",
+    "required": false,
+    "desc": "The ID of the parent comment for creating threaded"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "AIRTABLE_GET_RECORD",
+  "app": "airtable",
+  "category": "docs",
+  "split": "heldout",
+  "desc": "Retrieves a specific record from an Airtable table by its record ID",
+  "params": [
+   {
+    "name": "baseId",
+    "type": "str",
+    "required": true,
+    "desc": "ID of the Airtable base"
+   },
+   {
+    "name": "recordId",
+    "type": "str",
+    "required": true,
+    "desc": "ID of the record to retrieve"
+   },
+   {
+    "name": "tableIdOrName",
+    "type": "str",
+    "required": true,
+    "desc": "ID or name of the table"
+   },
+   {
+    "name": "timeZone",
+    "type": "str",
+    "required": false,
+    "desc": "Time zone for formatting dates when cellFormat='string'"
+   },
+   {
+    "name": "cellFormat",
+    "type": "str",
+    "required": false,
+    "desc": "Controls cell value formatting: 'json' for native types, 'string'"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ASANA_DELETE_GOAL",
+  "app": "asana",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Delete a goal",
+  "params": [
+   {
+    "name": "goal_gid",
+    "type": "str",
+    "required": true,
+    "desc": "Globally unique identifier for the goal"
+   },
+   {
+    "name": "opt_pretty",
+    "type": "bool",
+    "required": false,
+    "desc": "Provides \u201cpretty\u201d output"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "ASANA_DELETE_ALLOCATION",
+  "app": "asana",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Tool to delete an allocation by its ID",
+  "params": [
+   {
+    "name": "allocation_gid",
+    "type": "str",
+    "required": true,
+    "desc": "Globally unique identifier for the allocation"
+   },
+   {
+    "name": "opt_pretty",
+    "type": "bool",
+    "required": false,
+    "desc": "Provides \u201cpretty\u201d output"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "ASANA_UPDATE_USER",
+  "app": "asana",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Update a user's custom fields",
+  "params": [
+   {
+    "name": "user_gid",
+    "type": "str",
+    "required": true,
+    "desc": "A string identifying a user"
+   },
+   {
+    "name": "workspace",
+    "type": "str",
+    "required": false,
+    "desc": "The workspace to filter results on"
+   },
+   {
+    "name": "opt_fields",
+    "type": "list",
+    "required": false,
+    "desc": "This endpoint returns a resource which excludes some properties"
+   },
+   {
+    "name": "opt_pretty",
+    "type": "bool",
+    "required": false,
+    "desc": "Provides 'pretty' output"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ASANA_DELETE_PROJECT",
+  "app": "asana",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Delete a project",
+  "params": [
+   {
+    "name": "project_gid",
+    "type": "str",
+    "required": true,
+    "desc": "Globally unique identifier for the project"
+   },
+   {
+    "name": "opt_pretty",
+    "type": "bool",
+    "required": false,
+    "desc": "Provides the response in a \u201cpretty\u201d format"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "ASANA_DELETE_STORY",
+  "app": "asana",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Tool to delete a story by its GID",
+  "params": [
+   {
+    "name": "story_gid",
+    "type": "str",
+    "required": true,
+    "desc": "Globally unique identifier for the story"
+   },
+   {
+    "name": "opt_pretty",
+    "type": "bool",
+    "required": false,
+    "desc": "Provides \"pretty\" output"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "ASANA_CREATE_MEMBERSHIP",
+  "app": "asana",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Tool to create a membership by adding a user or team to a project, goal, or",
+  "params": [
+   {
+    "name": "member",
+    "type": "str",
+    "required": true,
+    "desc": "GID of the member (user or team) to add"
+   },
+   {
+    "name": "parent",
+    "type": "str",
+    "required": true,
+    "desc": "GID of the parent resource (project, goal, or portfolio)"
+   },
+   {
+    "name": "role",
+    "type": "str",
+    "required": false,
+    "desc": "Role of the member in the parent resource"
+   },
+   {
+    "name": "opt_pretty",
+    "type": "bool",
+    "required": false,
+    "desc": "Provides 'pretty' output with proper line breaking and indentation"
+   },
+   {
+    "name": "access_level",
+    "type": "str",
+    "required": false,
+    "desc": "Access level for the member in the parent resource"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ASANA_GET_ALLOCATION",
+  "app": "asana",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Get an allocation by ID",
+  "params": [
+   {
+    "name": "allocation_gid",
+    "type": "str",
+    "required": true,
+    "desc": "Globally unique identifier for the allocation"
+   },
+   {
+    "name": "opt_fields",
+    "type": "list",
+    "required": false,
+    "desc": "This endpoint returns a resource which excludes some properties"
+   },
+   {
+    "name": "opt_pretty",
+    "type": "bool",
+    "required": false,
+    "desc": "Provides \u201cpretty\u201d output"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ASANA_UPDATE_SECTION",
+  "app": "asana",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Update a section's name or position within a project",
+  "params": [
+   {
+    "name": "section_gid",
+    "type": "str",
+    "required": true,
+    "desc": "The globally unique identifier for the section to update"
+   },
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "The new name for the section"
+   },
+   {
+    "name": "opt_fields",
+    "type": "list",
+    "required": false,
+    "desc": "This endpoint returns a resource which excludes some properties"
+   },
+   {
+    "name": "opt_pretty",
+    "type": "bool",
+    "required": false,
+    "desc": "Provides 'pretty' output with proper line breaking and indentation"
+   },
+   {
+    "name": "insert_after",
+    "type": "str",
+    "required": false,
+    "desc": "An existing section within this project after which the"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "ASANA_GET_STORY",
+  "app": "asana",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Retrieve a single story by its GID, with optional selection of response fields",
+  "params": [
+   {
+    "name": "story_gid",
+    "type": "str",
+    "required": true,
+    "desc": "Globally unique identifier for the story"
+   },
+   {
+    "name": "opt_fields",
+    "type": "list",
+    "required": false,
+    "desc": "A comma-separated list of fields to include in the"
+   },
+   {
+    "name": "opt_pretty",
+    "type": "bool",
+    "required": false,
+    "desc": "Provides \"pretty\" output"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TRELLO_ADD_CARDS",
+  "app": "trello",
+  "category": "tasks",
+  "split": "heldout",
+  "desc": "Creates a new card in a Trello list",
+  "params": [
+   {
+    "name": "idList",
+    "type": "str",
+    "required": true,
+    "desc": "ID of the list to add the card to"
+   },
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "Name/title for the card"
+   },
+   {
+    "name": "due",
+    "type": "str",
+    "required": false,
+    "desc": "Due date for the card (date string or 'null'"
+   },
+   {
+    "name": "pos",
+    "type": "str",
+    "required": false,
+    "desc": "Position in list: 'top', 'bottom', or a positive float"
+   },
+   {
+    "name": "desc",
+    "type": "str",
+    "required": false,
+    "desc": "Card description (0-16384 characters)"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TRELLO_CREATE_SESSION",
+  "app": "trello",
+  "category": "tasks",
+  "split": "heldout",
+  "desc": "Creates or updates a Trello user session, optionally linking it to a specific board for status",
+  "params": [
+   {
+    "name": "status",
+    "type": "str",
+    "required": false,
+    "desc": "Sets the user's current activity status for the session"
+   },
+   {
+    "name": "idBoard",
+    "type": "str",
+    "required": false,
+    "desc": "The ID of the Trello board to associate with"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TRELLO_DELETE_BOARD",
+  "app": "trello",
+  "category": "tasks",
+  "split": "heldout",
+  "desc": "Permanently deletes a Trello board by its ID",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the board to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "TRELLO_ADD_LABELS",
+  "app": "trello",
+  "category": "tasks",
+  "split": "heldout",
+  "desc": "Creates a new label with a specified name (required) and color on a Trello board (idBoard",
+  "params": [
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "Name for the new label (0-16384 characters)"
+   },
+   {
+    "name": "color",
+    "type": "str",
+    "required": false,
+    "desc": "Color for the new label"
+   },
+   {
+    "name": "idBoard",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the board for the new label"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TRELLO_DELETE_ACTION",
+  "app": "trello",
+  "category": "tasks",
+  "split": "heldout",
+  "desc": "Deletes a specific Trello action, such as a commentCard, by its ID",
+  "params": [
+   {
+    "name": "idAction",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the Trello action to be deleted"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "TRELLO_ADD_CHECKLISTS",
+  "app": "trello",
+  "category": "tasks",
+  "split": "heldout",
+  "desc": "Creates a new checklist on a Trello card, either by name or by copying from idChecklistSource",
+  "params": [
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "The name for the new checklist"
+   },
+   {
+    "name": "pos",
+    "type": "str",
+    "required": false,
+    "desc": "The position of the new checklist on its card"
+   },
+   {
+    "name": "idCard",
+    "type": "str",
+    "required": false,
+    "desc": "The ID of the Trello card to which the"
+   },
+   {
+    "name": "idBoard",
+    "type": "str",
+    "required": false,
+    "desc": "The ID of the Trello board"
+   },
+   {
+    "name": "idChecklistSource",
+    "type": "str",
+    "required": false,
+    "desc": "The ID of an existing checklist to be copied"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TRELLO_GET_SEARCH",
+  "app": "trello",
+  "category": "tasks",
+  "split": "heldout",
+  "desc": "Searches Trello content (e.g., boards, cards, members) within specified organizations using a query and customizable result",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "The search query string"
+   },
+   {
+    "name": "idCards",
+    "type": "str",
+    "required": false,
+    "desc": "A comma-separated list of card IDs to search for"
+   },
+   {
+    "name": "partial",
+    "type": "str",
+    "required": false,
+    "desc": "Enable partial/prefix matching for search terms ('true' or 'false')"
+   },
+   {
+    "name": "idBoards",
+    "type": "str",
+    "required": false,
+    "desc": "A comma-separated list of board IDs to search within"
+   },
+   {
+    "name": "card_list",
+    "type": "str",
+    "required": false,
+    "desc": "Whether to include the list object for each card"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TRELLO_ADD_BOARDS",
+  "app": "trello",
+  "category": "tasks",
+  "split": "heldout",
+  "desc": "Creates a new Trello board",
+  "params": [
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "Name for the new Trello board (1-16384 characters)"
+   },
+   {
+    "name": "desc",
+    "type": "str",
+    "required": false,
+    "desc": "Description for the Trello board (0-16384 characters)"
+   },
+   {
+    "name": "closed",
+    "type": "str",
+    "required": false,
+    "desc": "Whether the board should be immediately archived (closed)"
+   },
+   {
+    "name": "powerUps",
+    "type": "str",
+    "required": false,
+    "desc": "Power-Ups to enable (e.g., 'calendar,voting', 'all'"
+   },
+   {
+    "name": "subscribed",
+    "type": "str",
+    "required": false,
+    "desc": "Whether the creator is automatically subscribed to the board"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "TRELLO_ADD_LISTS",
+  "app": "trello",
+  "category": "tasks",
+  "split": "heldout",
+  "desc": "Creates a new list on a specified Trello board, with options to copy an existing list",
+  "params": [
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "The name for the new list"
+   },
+   {
+    "name": "pos",
+    "type": "str",
+    "required": false,
+    "desc": "The position of the new list on the board"
+   },
+   {
+    "name": "closed",
+    "type": "str",
+    "required": false,
+    "desc": "Indicates whether the list should be created as closed"
+   },
+   {
+    "name": "idBoard",
+    "type": "str",
+    "required": false,
+    "desc": "The ID of the board to which the new"
+   },
+   {
+    "name": "subscribed",
+    "type": "str",
+    "required": false,
+    "desc": "Indicates whether the user creating the list should be"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "JIRA_CREATE_ISSUE",
+  "app": "jira",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Creates a Jira issue in a specified project with standard and additional custom fields, including fields",
+  "params": [
+   {
+    "name": "summary",
+    "type": "str",
+    "required": true,
+    "desc": "REQUIRED"
+   },
+   {
+    "name": "issue_type",
+    "type": "str",
+    "required": true,
+    "desc": "REQUIRED"
+   },
+   {
+    "name": "project_key",
+    "type": "str",
+    "required": true,
+    "desc": "REQUIRED"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "Detailed description of the issue"
+   },
+   {
+    "name": "labels",
+    "type": "list",
+    "required": false,
+    "desc": "List of labels to categorize the issue"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "JIRA_GET_USER",
+  "app": "jira",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Retrieve one privacy-filtered Jira user directly by account ID",
+  "params": [
+   {
+    "name": "account_id",
+    "type": "str",
+    "required": true,
+    "desc": "The Atlassian account ID of the user to retrieve"
+   },
+   {
+    "name": "expand",
+    "type": "str",
+    "required": false,
+    "desc": "Comma-separated user properties to expand, such as groups or"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "JIRA_GET_ATTACHMENT",
+  "app": "jira",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Retrieves the binary content of a Jira attachment by ID",
+  "params": [
+   {
+    "name": "file_name",
+    "type": "str",
+    "required": true,
+    "desc": "Desired filename for the downloaded attachment"
+   },
+   {
+    "name": "attachment_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the attachment to retrieve"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "JIRA_UPDATE_VERSION",
+  "app": "jira",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Update release metadata for an existing Jira project version",
+  "params": [
+   {
+    "name": "version_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier of the Jira project version to update"
+   },
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "New version name"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "New version description"
+   },
+   {
+    "name": "driver",
+    "type": "str",
+    "required": false,
+    "desc": "Atlassian account ID of the version driver"
+   },
+   {
+    "name": "expand",
+    "type": "str",
+    "required": false,
+    "desc": "Comma-separated version details to include: operations, issuesstatus, driver, or"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "JIRA_UPDATE_SPRINT",
+  "app": "jira",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Partially updates a sprint without clearing omitted fields",
+  "params": [
+   {
+    "name": "sprint_id",
+    "type": "int",
+    "required": true,
+    "desc": "Unique identifier of the sprint to update"
+   },
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "New sprint name"
+   },
+   {
+    "name": "id",
+    "type": "int",
+    "required": false,
+    "desc": "Sprint identifier to include in the request body"
+   },
+   {
+    "name": "goal",
+    "type": "str",
+    "required": false,
+    "desc": "New sprint goal"
+   },
+   {
+    "name": "self",
+    "type": "str",
+    "required": false,
+    "desc": "REST API URI for the sprint"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "JIRA_DELETE_VERSION",
+  "app": "jira",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Deletes a Jira version and optionally reassigns its issues",
+  "params": [
+   {
+    "name": "version_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the version to be deleted"
+   },
+   {
+    "name": "move_fix_issues_to",
+    "type": "str",
+    "required": false,
+    "desc": "The ID of an alternative version to which issues"
+   },
+   {
+    "name": "move_affected_issues_to",
+    "type": "str",
+    "required": false,
+    "desc": "The ID of an alternative version to which issues"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "JIRA_GET_FILTER",
+  "app": "jira",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Retrieves a specific Jira saved filter by ID, including its JQL and sharing metadata, to reuse",
+  "params": [
+   {
+    "name": "id",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of the filter to retrieve (numeric string"
+   },
+   {
+    "name": "expand",
+    "type": "str",
+    "required": false,
+    "desc": "Use expand to include additional information about the filter"
+   },
+   {
+    "name": "overrideSharePermissions",
+    "type": "bool",
+    "required": false,
+    "desc": "Set to true to override share permissions and retrieve"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "JIRA_LIST_SCREENS",
+  "app": "jira",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Return one filterable page of Jira screens and their metadata",
+  "params": [
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of screens to return in this page"
+   },
+   {
+    "name": "scope",
+    "type": "list",
+    "required": false,
+    "desc": "Unique screen scopes to match"
+   },
+   {
+    "name": "order_by",
+    "type": "str",
+    "required": false,
+    "desc": "Sort field and direction: name, -name, +name, id, -id"
+   },
+   {
+    "name": "start_at",
+    "type": "int",
+    "required": false,
+    "desc": "Zero-based index of the first screen to return"
+   },
+   {
+    "name": "query_string",
+    "type": "str",
+    "required": false,
+    "desc": "Case-insensitive partial match applied to screen names"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "JIRA_GET_DASHBOARDS",
+  "app": "jira",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Tool to list and search Jira dashboards visible to the current user",
+  "params": [
+   {
+    "name": "maxResults",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of items to return per page"
+   },
+   {
+    "name": "filter",
+    "type": "str",
+    "required": false,
+    "desc": "Filter options for dashboard search"
+   },
+   {
+    "name": "startAt",
+    "type": "int",
+    "required": false,
+    "desc": "The index of the first item to return in"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GITHUB_CREATE_AN_ISSUE",
+  "app": "github",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Creates a new issue in a GitHub repository, requiring the repository to exist and have issues",
+  "params": [
+   {
+    "name": "title",
+    "type": "str",
+    "required": true,
+    "desc": "The title for the new issue"
+   },
+   {
+    "name": "repo",
+    "type": "str",
+    "required": true,
+    "desc": "The name of the repository, without the .git extension"
+   },
+   {
+    "name": "owner",
+    "type": "str",
+    "required": true,
+    "desc": "The GitHub account owner of the repository (case-insensitive)"
+   },
+   {
+    "name": "body",
+    "type": "str",
+    "required": false,
+    "desc": "The detailed textual contents of the new issue"
+   },
+   {
+    "name": "labels",
+    "type": "list",
+    "required": false,
+    "desc": "Array of label names to associate with this issue"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GITHUB_CREATE_BRANCH",
+  "app": "github",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Creates a new branch in a GitHub repository pointing to a specified commit",
+  "params": [
+   {
+    "name": "sha",
+    "type": "str",
+    "required": true,
+    "desc": "The SHA-1 hash of the commit that the new"
+   },
+   {
+    "name": "repo",
+    "type": "str",
+    "required": true,
+    "desc": "The name of the repository without the .git extension"
+   },
+   {
+    "name": "owner",
+    "type": "str",
+    "required": true,
+    "desc": "The account owner of the repository (username or organization"
+   },
+   {
+    "name": "branch_name",
+    "type": "str",
+    "required": true,
+    "desc": "The name of the new branch to create (e.g"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GITHUB_DELETE_MILESTONE",
+  "app": "github",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Deletes the specified milestone if it exists",
+  "params": [
+   {
+    "name": "repo",
+    "type": "str",
+    "required": true,
+    "desc": "The name of the repository, without the .git extension"
+   },
+   {
+    "name": "owner",
+    "type": "str",
+    "required": true,
+    "desc": "The username or organization name that owns the repository"
+   },
+   {
+    "name": "milestone_number",
+    "type": "int",
+    "required": true,
+    "desc": "The unique number that identifies the milestone to be"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GITHUB_DELETE_CODESPACE",
+  "app": "github",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Deletes a specific codespace owned by the authenticated user",
+  "params": [
+   {
+    "name": "codespace_name",
+    "type": "str",
+    "required": true,
+    "desc": "The unique name of the codespace to be deleted"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GITHUB_DELETE_PACKAGE",
+  "app": "github",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Permanently deletes a specific package owned by the authenticated user",
+  "params": [
+   {
+    "name": "package_name",
+    "type": "str",
+    "required": true,
+    "desc": "The unique name of the package to delete"
+   },
+   {
+    "name": "package_type",
+    "type": "str",
+    "required": true,
+    "desc": "The type of package to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GITHUB_FIND_REPOSITORIES",
+  "app": "github",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Search GitHub repositories by keywords, language, stars, topics, and ownership, returning paginated results",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "Search query for repository name, description, or README content"
+   },
+   {
+    "name": "page",
+    "type": "int",
+    "required": false,
+    "desc": "Page number of results to fetch"
+   },
+   {
+    "name": "sort",
+    "type": "str",
+    "required": false,
+    "desc": "Field to sort results by"
+   },
+   {
+    "name": "order",
+    "type": "str",
+    "required": false,
+    "desc": "Sort order (ascending or descending)"
+   },
+   {
+    "name": "owner",
+    "type": "str",
+    "required": false,
+    "desc": "Filter by specific user or organization"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GITHUB_CREATE_REPOSITORY",
+  "app": "github",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Creates a new repository for the authenticated user",
+  "params": [
+   {
+    "name": "name",
+    "type": "str",
+    "required": true,
+    "desc": "The name of the repository"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "A short description of the repository"
+   },
+   {
+    "name": "private",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether the repository is private"
+   },
+   {
+    "name": "has_wiki",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether the wiki is enabled"
+   },
+   {
+    "name": "homepage",
+    "type": "str",
+    "required": false,
+    "desc": "A URL with more information about the repository"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "GITHUB_DELETE_ARTIFACT",
+  "app": "github",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Deletes a GitHub artifact by its ID within a repository, typically resulting in an empty response",
+  "params": [
+   {
+    "name": "repo",
+    "type": "str",
+    "required": true,
+    "desc": "Name of the repository, without the .git extension"
+   },
+   {
+    "name": "owner",
+    "type": "str",
+    "required": true,
+    "desc": "Account owner of the repository (user or organization)"
+   },
+   {
+    "name": "artifact_id",
+    "type": "int",
+    "required": true,
+    "desc": "Unique ID of the artifact to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "GITHUB_DELETE_GIST",
+  "app": "github",
+  "category": "tasks",
+  "split": "train",
+  "desc": "Permanently deletes an existing GitHub gist, specified by its gist_id",
+  "params": [
+   {
+    "name": "gist_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier of the gist to be deleted"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "COMPOSIO_SEARCH_FLIGHTS",
+  "app": "composio_search",
+  "category": "search",
+  "split": "train",
+  "desc": "Search flights using a natural-language route or structured airport codes and dates",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "Natural language flight search query"
+   },
+   {
+    "name": "adults",
+    "type": "int",
+    "required": false,
+    "desc": "Number of adult passengers (18+ years old)"
+   },
+   {
+    "name": "infants",
+    "type": "int",
+    "required": false,
+    "desc": "Number of infant passengers (under 2 years old)"
+   },
+   {
+    "name": "children",
+    "type": "int",
+    "required": false,
+    "desc": "Number of child passengers (2-11 years old)"
+   },
+   {
+    "name": "currency",
+    "type": "str",
+    "required": false,
+    "desc": "Currency for pricing (3-letter currency code)"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "COMPOSIO_SEARCH_NEWS",
+  "app": "composio_search",
+  "category": "search",
+  "split": "train",
+  "desc": "Search Google News results by query, time window, country and language",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "Search query for news articles"
+   },
+   {
+    "name": "when",
+    "type": "str",
+    "required": false,
+    "desc": "Time filter for news articles"
+   },
+   {
+    "name": "start",
+    "type": "int",
+    "required": false,
+    "desc": "Result offset for pagination"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "COMPOSIO_SEARCH_WEB",
+  "app": "composio_search",
+  "category": "search",
+  "split": "train",
+  "desc": "Search the web using Exa's answer API, returning an AI-generated answer and source citations",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "The search query for the Composio Exa API"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "COMPOSIO_SEARCH_HOTELS",
+  "app": "composio_search",
+  "category": "search",
+  "split": "train",
+  "desc": "Search hotels and vacation rentals by location and stay dates, with price, class, cancellation and localization",
+  "params": [
+   {
+    "name": "q",
+    "type": "str",
+    "required": true,
+    "desc": "Location for hotel search"
+   },
+   {
+    "name": "check_in_date",
+    "type": "str",
+    "required": true,
+    "desc": "Check-in date in YYYY-MM-DD format"
+   },
+   {
+    "name": "check_out_date",
+    "type": "str",
+    "required": true,
+    "desc": "Check-out date in YYYY-MM-DD format"
+   },
+   {
+    "name": "adults",
+    "type": "int",
+    "required": false,
+    "desc": "Number of adult guests"
+   },
+   {
+    "name": "sort_by",
+    "type": "int",
+    "required": false,
+    "desc": "Sort hotels by criteria"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "COMPOSIO_SEARCH_SHOPPING",
+  "app": "composio_search",
+  "category": "search",
+  "split": "train",
+  "desc": "Search for products with advanced price filtering, location targeting, and deal discovery",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "Product search query"
+   },
+   {
+    "name": "location",
+    "type": "str",
+    "required": false,
+    "desc": "Geographic location for shopping search"
+   },
+   {
+    "name": "on_sale",
+    "type": "bool",
+    "required": false,
+    "desc": "Filter to show only products that are currently on"
+   },
+   {
+    "name": "sort_by",
+    "type": "int",
+    "required": false,
+    "desc": "Sort products by price"
+   },
+   {
+    "name": "max_price",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum price filter in USD (integer value)"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "COMPOSIO_SEARCH_FINANCE",
+  "app": "composio_search",
+  "category": "search",
+  "split": "train",
+  "desc": "Search Google Finance for stock quotes, indices, cryptocurrency prices, exchange rates, company financials and related news",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "Financial search query"
+   },
+   {
+    "name": "window",
+    "type": "str",
+    "required": false,
+    "desc": "Time range for financial charts and data"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "COMPOSIO_SEARCH_TAVILY",
+  "app": "composio_search",
+  "category": "search",
+  "split": "train",
+  "desc": "Search a broad range of content using the Tavily API, with options for search depth, images",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "The primary text used to perform the search"
+   },
+   {
+    "name": "max_results",
+    "type": "int",
+    "required": false,
+    "desc": "The maximum number of search results that the API"
+   },
+   {
+    "name": "search_depth",
+    "type": "str",
+    "required": false,
+    "desc": "Determines the thoroughness of the search"
+   },
+   {
+    "name": "include_answer",
+    "type": "bool",
+    "required": false,
+    "desc": "Specifies whether to include direct answers to the query"
+   },
+   {
+    "name": "include_images",
+    "type": "bool",
+    "required": false,
+    "desc": "A flag indicating whether to include images in the"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "COMPOSIO_SEARCH_SCHOLAR",
+  "app": "composio_search",
+  "category": "search",
+  "split": "train",
+  "desc": "Search Google Scholar for scholarly articles",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "The search query for the Composio Scholar Search API"
+   },
+   {
+    "name": "start",
+    "type": "int",
+    "required": false,
+    "desc": "Result offset for pagination"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "COMPOSIO_SEARCH_EVENT",
+  "app": "composio_search",
+  "category": "search",
+  "split": "train",
+  "desc": "Search for upcoming events, concerts, festivals, conferences, and other activities",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "The search query for events, specifying the event topic"
+   },
+   {
+    "name": "location",
+    "type": "str",
+    "required": false,
+    "desc": "Geographic location to search for events"
+   },
+   {
+    "name": "start",
+    "type": "int",
+    "required": false,
+    "desc": "Result offset for pagination"
+   },
+   {
+    "name": "htichips",
+    "type": "str",
+    "required": false,
+    "desc": "Advanced event filters"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "COMPOSIO_SEARCH_WALMART",
+  "app": "composio_search",
+  "category": "search",
+  "split": "train",
+  "desc": "Search Walmart products with optional minimum and maximum price filters",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "Product search query for Walmart"
+   },
+   {
+    "name": "max_price",
+    "type": "num",
+    "required": false,
+    "desc": "Maximum price filter in USD"
+   },
+   {
+    "name": "min_price",
+    "type": "num",
+    "required": false,
+    "desc": "Minimum price filter in USD"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HACKERNEWS_SEARCH_POSTS",
+  "app": "hackernews",
+  "category": "search",
+  "split": "train",
+  "desc": "Search Hacker News posts using full-text search powered by Algolia",
+  "params": [
+   {
+    "name": "query",
+    "type": "str",
+    "required": true,
+    "desc": "Full-text search query"
+   },
+   {
+    "name": "size",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of results to return"
+   },
+   {
+    "name": "page",
+    "type": "int",
+    "required": false,
+    "desc": "Page number for pagination (0-indexed)"
+   },
+   {
+    "name": "tags",
+    "type": "list",
+    "required": false,
+    "desc": "Filter by tag types"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HACKERNEWS_GET_USER",
+  "app": "hackernews",
+  "category": "search",
+  "split": "train",
+  "desc": "Retrieve a Hacker News user's public profile by their username",
+  "params": [
+   {
+    "name": "username",
+    "type": "str",
+    "required": true,
+    "desc": "The case-sensitive username of the Hacker News user to"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HACKERNEWS_GET_UPDATES",
+  "app": "hackernews",
+  "category": "search",
+  "split": "train",
+  "desc": "Get IDs of recently changed Hacker News items and usernames of recently changed user profiles",
+  "params": [
+   {
+    "name": "print",
+    "type": "str",
+    "required": false,
+    "desc": "Set to 'pretty' for formatted JSON output"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HACKERNEWS_GET_ITEM",
+  "app": "hackernews",
+  "category": "search",
+  "split": "train",
+  "desc": "Tool to get a Hacker News item by its unique ID from the Firebase API",
+  "params": [
+   {
+    "name": "id",
+    "type": "int",
+    "required": true,
+    "desc": "The unique integer ID of the item (story, comment"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HACKERNEWS_GET_JOB_STORIES",
+  "app": "hackernews",
+  "category": "search",
+  "split": "train",
+  "desc": "Get up to 200 latest job story IDs from Hacker News",
+  "params": [
+   {
+    "name": "print_format",
+    "type": "str",
+    "required": false,
+    "desc": "Set to 'pretty' for formatted JSON output"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HACKERNEWS_GET_LATEST_POSTS",
+  "app": "hackernews",
+  "category": "search",
+  "split": "train",
+  "desc": "Get the latest posts from Hacker News based on optional filters",
+  "params": [
+   {
+    "name": "size",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of results to return"
+   },
+   {
+    "name": "page",
+    "type": "int",
+    "required": false,
+    "desc": "Page number for pagination (0-indexed)"
+   },
+   {
+    "name": "tags",
+    "type": "list",
+    "required": false,
+    "desc": "Tags to filter posts"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HACKERNEWS_GET_NEW_STORIES",
+  "app": "hackernews",
+  "category": "search",
+  "split": "train",
+  "desc": "Get up to 500 newest story IDs from Hacker News",
+  "params": [
+   {
+    "name": "print_format",
+    "type": "str",
+    "required": false,
+    "desc": "Set to 'pretty' for formatted JSON output"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HACKERNEWS_GET_BEST_STORIES",
+  "app": "hackernews",
+  "category": "search",
+  "split": "train",
+  "desc": "Get up to 500 best story IDs from HackerNews ranked by score",
+  "params": [
+   {
+    "name": "print",
+    "type": "str",
+    "required": false,
+    "desc": "Output formatting options for the API response"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HACKERNEWS_GET_SHOW_STORIES",
+  "app": "hackernews",
+  "category": "search",
+  "split": "train",
+  "desc": "Tool to retrieve up to 200 latest Show HN story IDs from Hacker News",
+  "params": [
+   {
+    "name": "print_format",
+    "type": "str",
+    "required": false,
+    "desc": "Set to 'pretty' for formatted JSON output"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OPENWEATHER_API_GET_CURRENT_WEATHER",
+  "app": "openweather_api",
+  "category": "search",
+  "split": "train",
+  "desc": "Retrieve current weather for a location identified by city name, city ID, postal code, or coordinates",
+  "params": [
+   {
+    "name": "q",
+    "type": "str",
+    "required": true,
+    "desc": "City name, state code and country code, e.g., 'London,uk'"
+   },
+   {
+    "name": "id",
+    "type": "int",
+    "required": false,
+    "desc": "City ID, e.g., 2172797"
+   },
+   {
+    "name": "lat",
+    "type": "num",
+    "required": false,
+    "desc": "Geographic coordinate latitude, e.g., 35.0"
+   },
+   {
+    "name": "lon",
+    "type": "num",
+    "required": false,
+    "desc": "Geographic coordinate longitude, e.g., 139.0"
+   },
+   {
+    "name": "zip",
+    "type": "str",
+    "required": false,
+    "desc": "Zip code and country code, e.g., '94040,us'"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OPENWEATHER_API_DELETE_WEATHER_STATION",
+  "app": "openweather_api",
+  "category": "search",
+  "split": "train",
+  "desc": "Tool to delete a registered weather station",
+  "params": [
+   {
+    "name": "station_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique ID of the weather station to delete"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "OPENWEATHER_API_GET_UV_INDEX",
+  "app": "openweather_api",
+  "category": "search",
+  "split": "train",
+  "desc": "Tool to retrieve current UV index for a location",
+  "params": [
+   {
+    "name": "lat",
+    "type": "num",
+    "required": true,
+    "desc": "Latitude of the location, between -90 and 90"
+   },
+   {
+    "name": "lon",
+    "type": "num",
+    "required": true,
+    "desc": "Longitude of the location, between -180 and 180"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OPENWEATHER_API_GET_WEATHER_STATION",
+  "app": "openweather_api",
+  "category": "search",
+  "split": "train",
+  "desc": "Tool to get information about a specific weather station by its ID",
+  "params": [
+   {
+    "name": "station_id",
+    "type": "str",
+    "required": true,
+    "desc": "Internal station ID to retrieve information for"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OPENWEATHER_API_GET_GEOCODING_DIRECT",
+  "app": "openweather_api",
+  "category": "search",
+  "split": "train",
+  "desc": "Tool to convert a location name into geographic coordinates",
+  "params": [
+   {
+    "name": "q",
+    "type": "str",
+    "required": true,
+    "desc": "Location query as 'city,country_code', or 'city,state_code,country_code' for US locations"
+   },
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Number of results to return (1 to 5)"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OPENWEATHER_API_GET_GEOCODING_REVERSE",
+  "app": "openweather_api",
+  "category": "search",
+  "split": "train",
+  "desc": "Tool to convert geographic coordinates into a location name",
+  "params": [
+   {
+    "name": "lat",
+    "type": "num",
+    "required": true,
+    "desc": "Latitude of the location in decimal degrees"
+   },
+   {
+    "name": "lon",
+    "type": "num",
+    "required": true,
+    "desc": "Longitude of the location in decimal degrees"
+   },
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Number of results to return (1 to 5)"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OPENWEATHER_API_GET5_DAY_FORECAST",
+  "app": "openweather_api",
+  "category": "search",
+  "split": "train",
+  "desc": "Get a 5-day forecast at 3-hour intervals for a location identified by city name, city ID",
+  "params": [
+   {
+    "name": "q",
+    "type": "str",
+    "required": false,
+    "desc": "City name and optional country code, e.g"
+   },
+   {
+    "name": "id",
+    "type": "int",
+    "required": false,
+    "desc": "OpenWeatherMap city ID"
+   },
+   {
+    "name": "lat",
+    "type": "num",
+    "required": false,
+    "desc": "Latitude in degrees"
+   },
+   {
+    "name": "lon",
+    "type": "num",
+    "required": false,
+    "desc": "Longitude in degrees"
+   },
+   {
+    "name": "zip",
+    "type": "str",
+    "required": false,
+    "desc": "Zip code with country code, e.g"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OPENWEATHER_API_UPDATE_WEATHER_STATION",
+  "app": "openweather_api",
+  "category": "search",
+  "split": "train",
+  "desc": "Update an existing weather station's details, including its name, location, external ID, or altitude",
+  "params": [
+   {
+    "name": "latitude",
+    "type": "num",
+    "required": true,
+    "desc": "Latitude of the station in degrees, between -90 and"
+   },
+   {
+    "name": "longitude",
+    "type": "num",
+    "required": true,
+    "desc": "Longitude of the station in degrees, between -180 and"
+   },
+   {
+    "name": "station_id",
+    "type": "str",
+    "required": true,
+    "desc": "Unique identifier of the weather station to update"
+   },
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "Human-readable name for the station"
+   },
+   {
+    "name": "altitude",
+    "type": "num",
+    "required": false,
+    "desc": "Altitude of the station above sea level in meters"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "OPENWEATHER_API_GET_AIR_POLLUTION_FORECAST",
+  "app": "openweather_api",
+  "category": "search",
+  "split": "train",
+  "desc": "Tool to get forecasted air pollution data for a specific location",
+  "params": [
+   {
+    "name": "lat",
+    "type": "num",
+    "required": true,
+    "desc": "Geographical latitude in decimal degrees (range -90 to 90)"
+   },
+   {
+    "name": "lon",
+    "type": "num",
+    "required": true,
+    "desc": "Geographical longitude in decimal degrees (range -180 to 180)"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HUBSPOT_CREATE_TASK",
+  "app": "hubspot",
+  "category": "crm",
+  "split": "train",
+  "desc": "Creates a new CRM task record",
+  "params": [
+   {
+    "name": "hs_timestamp",
+    "type": "str",
+    "required": true,
+    "desc": "Task due date in ISO 8601 format or Unix"
+   },
+   {
+    "name": "hs_task_body",
+    "type": "str",
+    "required": false,
+    "desc": "Notes or body text of the task"
+   },
+   {
+    "name": "hs_task_type",
+    "type": "str",
+    "required": false,
+    "desc": "Type of the task"
+   },
+   {
+    "name": "hs_task_status",
+    "type": "str",
+    "required": false,
+    "desc": "Current status of the task"
+   },
+   {
+    "name": "hs_task_subject",
+    "type": "str",
+    "required": false,
+    "desc": "Title or subject line of the task"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HUBSPOT_CREATE_MEETING",
+  "app": "hubspot",
+  "category": "crm",
+  "split": "train",
+  "desc": "Creates a new meeting engagement in HubSpot CRM",
+  "params": [
+   {
+    "name": "hs_timestamp",
+    "type": "str",
+    "required": true,
+    "desc": "The date and time when the meeting occurred, in"
+   },
+   {
+    "name": "hs_meeting_body",
+    "type": "str",
+    "required": false,
+    "desc": "Description or notes about the meeting content and agenda"
+   },
+   {
+    "name": "hs_activity_type",
+    "type": "str",
+    "required": false,
+    "desc": "Meeting classification or activity type based on your HubSpot"
+   },
+   {
+    "name": "hs_meeting_title",
+    "type": "str",
+    "required": false,
+    "desc": "The title or name of the meeting"
+   },
+   {
+    "name": "hubspot_owner_id",
+    "type": "str",
+    "required": false,
+    "desc": "The ID of the HubSpot user who owns or"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HUBSPOT_LIST_SEQUENCES",
+  "app": "hubspot",
+  "category": "crm",
+  "split": "train",
+  "desc": "Lists automation sequences for a specific HubSpot user",
+  "params": [
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "Sequence name used to filter the results"
+   },
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of sequences to return on this page"
+   },
+   {
+    "name": "after",
+    "type": "str",
+    "required": false,
+    "desc": "Cursor from a previous response's paging.next.after value"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HUBSPOT_DELETE_CAMPAIGN",
+  "app": "hubspot",
+  "category": "crm",
+  "split": "train",
+  "desc": "Permanently deletes a marketing campaign from HubSpot using its campaignGuid",
+  "params": [
+   {
+    "name": "campaignGuid",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier (UUID) for the marketing campaign to"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "HUBSPOT_CREATE_TICKET",
+  "app": "hubspot",
+  "category": "crm",
+  "split": "train",
+  "desc": "Creates a new HubSpot ticket",
+  "params": [
+   {
+    "name": "subject",
+    "type": "str",
+    "required": false,
+    "desc": "Subject line or title of the ticket"
+   },
+   {
+    "name": "content",
+    "type": "str",
+    "required": false,
+    "desc": "Main body or description of the ticket, detailing the"
+   },
+   {
+    "name": "created_by",
+    "type": "str",
+    "required": false,
+    "desc": "ID of the HubSpot user who created the ticket"
+   },
+   {
+    "name": "createdate",
+    "type": "str",
+    "required": false,
+    "desc": "Date and time the ticket was created (ISO 8601"
+   },
+   {
+    "name": "hs_tag_ids",
+    "type": "list",
+    "required": false,
+    "desc": "List of tag IDs associated with the ticket for"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HUBSPOT_ARCHIVE_PRODUCT",
+  "app": "hubspot",
+  "category": "crm",
+  "split": "train",
+  "desc": "Archives a HubSpot product by its ID",
+  "params": [
+   {
+    "name": "productId",
+    "type": "str",
+    "required": true,
+    "desc": "Unique HubSpot identifier for the product to be archived"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "HUBSPOT_GET_COMPANY",
+  "app": "hubspot",
+  "category": "crm",
+  "split": "train",
+  "desc": "Retrieves a HubSpot company by its ID",
+  "params": [
+   {
+    "name": "companyId",
+    "type": "str",
+    "required": true,
+    "desc": "Unique HubSpot identifier for the company to retrieve"
+   },
+   {
+    "name": "archived",
+    "type": "bool",
+    "required": false,
+    "desc": "Set to true to include only archived companies"
+   },
+   {
+    "name": "properties",
+    "type": "list",
+    "required": false,
+    "desc": "Company property names to include in the response"
+   },
+   {
+    "name": "associations",
+    "type": "list",
+    "required": false,
+    "desc": "Object types (e.g., 'contacts', 'deals') to include associated object"
+   },
+   {
+    "name": "propertiesWithHistory",
+    "type": "list",
+    "required": false,
+    "desc": "Property names for which to include current and historical"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HUBSPOT_GET_TICKET",
+  "app": "hubspot",
+  "category": "crm",
+  "split": "train",
+  "desc": "Retrieves a HubSpot ticket by its ID",
+  "params": [
+   {
+    "name": "ticketId",
+    "type": "str",
+    "required": true,
+    "desc": "Unique HubSpot identifier for the ticket to retrieve"
+   },
+   {
+    "name": "archived",
+    "type": "bool",
+    "required": false,
+    "desc": "Filter by archived status"
+   },
+   {
+    "name": "properties",
+    "type": "list",
+    "required": false,
+    "desc": "Ticket property names to include in the response"
+   },
+   {
+    "name": "associations",
+    "type": "list",
+    "required": false,
+    "desc": "Object types for which to retrieve associated IDs"
+   },
+   {
+    "name": "propertiesWithHistory",
+    "type": "list",
+    "required": false,
+    "desc": "Property names for which to include historical values"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "HUBSPOT_ARCHIVE_QUOTE",
+  "app": "hubspot",
+  "category": "crm",
+  "split": "train",
+  "desc": "Archives a HubSpot Quote object by ID, moving it to the recycling bin where it can",
+  "params": [
+   {
+    "name": "quoteId",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier (ID) of an existing Quote object"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "STRIPE_CREATE_PLAN",
+  "app": "stripe",
+  "category": "payments",
+  "split": "train",
+  "desc": "Tool to create a recurring billing plan with flexible pricing configuration",
+  "params": [
+   {
+    "name": "currency",
+    "type": "str",
+    "required": true,
+    "desc": "Three-letter ISO currency code in lowercase"
+   },
+   {
+    "name": "interval",
+    "type": "str",
+    "required": true,
+    "desc": "Billing frequency"
+   },
+   {
+    "name": "id",
+    "type": "str",
+    "required": false,
+    "desc": "Custom plan identifier"
+   },
+   {
+    "name": "meter",
+    "type": "str",
+    "required": false,
+    "desc": "Meter ID tracking metered price usage"
+   },
+   {
+    "name": "active",
+    "type": "bool",
+    "required": false,
+    "desc": "Whether the plan is available for new subscriptions"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "STRIPE_GET_PAYOUT",
+  "app": "stripe",
+  "category": "payments",
+  "split": "train",
+  "desc": "Tool to retrieve details of an existing Stripe payout",
+  "params": [
+   {
+    "name": "payout_id",
+    "type": "str",
+    "required": true,
+    "desc": "The unique identifier for the payout to retrieve"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "STRIPE_DELETE_INVOICEITEM",
+  "app": "stripe",
+  "category": "payments",
+  "split": "train",
+  "desc": "Tool to delete an invoice item from Stripe",
+  "params": [
+   {
+    "name": "invoiceitem",
+    "type": "str",
+    "required": true,
+    "desc": "The identifier of the invoice item to be deleted"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "STRIPE_LIST_CUSTOMERS",
+  "app": "stripe",
+  "category": "payments",
+  "split": "train",
+  "desc": "Retrieves a list of Stripe customers, with options to filter by email, creation date, or test",
+  "params": [
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of customer objects to return (range 1-100)"
+   },
+   {
+    "name": "email",
+    "type": "str",
+    "required": false,
+    "desc": "Filters customers by a case-sensitive email address"
+   },
+   {
+    "name": "test_clock",
+    "type": "str",
+    "required": false,
+    "desc": "Filters customers by the specified test clock ID"
+   },
+   {
+    "name": "ending_before",
+    "type": "str",
+    "required": false,
+    "desc": "Pagination cursor"
+   },
+   {
+    "name": "starting_after",
+    "type": "str",
+    "required": false,
+    "desc": "Pagination cursor"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "STRIPE_LIST_INVOICEITEMS",
+  "app": "stripe",
+  "category": "payments",
+  "split": "train",
+  "desc": "Retrieves a paginated list of Stripe invoice items",
+  "params": [
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Maximum number of invoice items to return (1-100)"
+   },
+   {
+    "name": "invoice",
+    "type": "str",
+    "required": false,
+    "desc": "Filter by invoice ID"
+   },
+   {
+    "name": "pending",
+    "type": "bool",
+    "required": false,
+    "desc": "Filter by attachment status"
+   },
+   {
+    "name": "customer",
+    "type": "str",
+    "required": false,
+    "desc": "Filter by customer ID"
+   },
+   {
+    "name": "ending_before",
+    "type": "str",
+    "required": false,
+    "desc": "Cursor for backward pagination"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "STRIPE_CREATE_COUPON",
+  "app": "stripe",
+  "category": "payments",
+  "split": "train",
+  "desc": "Creates a new discount coupon in Stripe with percentage or fixed amount discount",
+  "params": [
+   {
+    "name": "name",
+    "type": "str",
+    "required": false,
+    "desc": "Name of the coupon displayed to customers on invoices"
+   },
+   {
+    "name": "id",
+    "type": "str",
+    "required": false,
+    "desc": "Unique identifier for the coupon"
+   },
+   {
+    "name": "currency",
+    "type": "str",
+    "required": false,
+    "desc": "Three-letter ISO currency code in lowercase (e.g., 'usd', 'eur')"
+   },
+   {
+    "name": "duration",
+    "type": "str",
+    "required": false,
+    "desc": "Specifies how long the discount applies"
+   },
+   {
+    "name": "redeem_by",
+    "type": "int",
+    "required": false,
+    "desc": "Unix timestamp specifying the last time at which the"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "STRIPE_DELETE_INVOICE",
+  "app": "stripe",
+  "category": "payments",
+  "split": "train",
+  "desc": "Permanently deletes a draft invoice",
+  "params": [
+   {
+    "name": "invoice",
+    "type": "str",
+    "required": true,
+    "desc": "The identifier of the invoice to be deleted"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ },
+ {
+  "name": "STRIPE_LIST_PRICES",
+  "app": "stripe",
+  "category": "payments",
+  "split": "train",
+  "desc": "Tool to list Stripe prices",
+  "params": [
+   {
+    "name": "limit",
+    "type": "int",
+    "required": false,
+    "desc": "Limit number of prices returned (1-100)"
+   },
+   {
+    "name": "type",
+    "type": "str",
+    "required": false,
+    "desc": "Filter by price type: one_time or recurring"
+   },
+   {
+    "name": "active",
+    "type": "bool",
+    "required": false,
+    "desc": "Filter prices based on their active status"
+   },
+   {
+    "name": "expand",
+    "type": "list",
+    "required": false,
+    "desc": "Fields to expand in each price object"
+   },
+   {
+    "name": "product",
+    "type": "str",
+    "required": false,
+    "desc": "Filter prices for a specific product ID (e.g., 'prod_123')"
+   }
+  ],
+  "returns": [],
+  "risky": false
+ },
+ {
+  "name": "STRIPE_CREATE_TRANSFER",
+  "app": "stripe",
+  "category": "payments",
+  "split": "train",
+  "desc": "Creates a transfer to move funds between Stripe accounts as part of Connect",
+  "params": [
+   {
+    "name": "currency",
+    "type": "str",
+    "required": true,
+    "desc": "Three-letter ISO code for currency in lowercase"
+   },
+   {
+    "name": "destination",
+    "type": "str",
+    "required": true,
+    "desc": "The ID of a connected Stripe account"
+   },
+   {
+    "name": "description",
+    "type": "str",
+    "required": false,
+    "desc": "An arbitrary string attached to the object"
+   },
+   {
+    "name": "amount",
+    "type": "int",
+    "required": false,
+    "desc": "A positive integer in cents (or local equivalent) representing"
+   },
+   {
+    "name": "expand",
+    "type": "list",
+    "required": false,
+    "desc": "Specifies which fields in the response should be expanded"
+   }
+  ],
+  "returns": [],
+  "risky": true
+ }
+]

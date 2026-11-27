@@ -1,0 +1,9 @@
+.streamlit/secrets.toml
+secrets.toml
+.env
+*.pt
+*.safetensors
+*.bin
+__pycache__/
+.venv/
+v2/artifacts/

@@ -55,7 +55,11 @@ def load_models(threads: int):
         tk = os.environ.get("HF_TOKEN")
         ckpt = hf_hub_download(MODEL_REPO, "model.pt", token=tk); tok = hf_hub_download(MODEL_REPO, "tokenizer.json", token=tk)
     ret_local = os.path.join(ROOT, "retriever/potion-base-8M")
-    ret = Retriever(path=ret_local if os.path.exists(ret_local) else "minishlab/potion-base-8M")
+    try:
+        ret = Retriever(path=ret_local if os.path.exists(ret_local) else "minishlab/potion-base-8M")
+    except Exception as e:
+        st.error("The tool retriever failed to load, so tool search cannot run. " + str(e)[:400])
+        raise
     return R2.Brain2(ckpt=ckpt, tok=tok, threads=threads), ret
 
 def pretty(o, n=6000):

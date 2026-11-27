@@ -6,7 +6,7 @@
   * a confirmation gate enforced in CODE: a risky tool (send/delete/post/...) never runs unless the user just said yes to a
     confirmation question. Otherwise the call is held and the user is asked.
 All execution is MOCKED (runtime.mock_execute)."""
-import os, sys, json, re, torch
+import os, sys, json, re, torch, difflib
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE); sys.path.insert(0, ROOT)
 import runtime as R
 from runtime import parse_call, mock_execute
@@ -211,7 +211,7 @@ class Brain2(R.Brain):
         self.special_ids = set(self.sp.values()) | {self.eot, 0}
 
     @torch.no_grad()
-    def generate_turn(self, ids, max_new=400, grammar=None, keep=160):
+    def generate_turn(self, ids, max_new=400, grammar=None, keep=160, on_call=None):
         ids = ids[-(self.cfg.ctx - keep):]
         logits, cache = forward_cached(self.model, torch.tensor([ids]), None, 0)
         pos = len(ids); out = []; in_call = False; call_txt = ""
@@ -230,9 +230,17 @@ class Brain2(R.Brain):
             else:
                 nxt = int(torch.argmax(logits[0]))
             out.append(nxt)
-            if nxt == self.sp["call"]: in_call = True
+            if nxt == self.sp["call"]:
+                in_call = True
+                if on_call is not None:
+                    think = " ".join(t for r, t in self._segs_from_ids(out) if r == "think")
+                    g2 = on_call(think)
+                    if g2 is not None: grammar = g2
             if nxt == self.eot or nxt in (self.sp["user"], self.sp["result"], self.sp["tools"]) or pos >= self.cfg.ctx - 1: break
             logits, cache = forward_cached(self.model, torch.tensor([[nxt]]), cache, pos); pos += 1
+        return self._segs_from_ids(out)
+
+    def _segs_from_ids(self, out):
         segs, cur_role, cur = [], None, []
         for t in out:
             if t in self.id2sp or t == self.eot:
@@ -245,6 +253,51 @@ class Brain2(R.Brain):
 
 YES_RE = re.compile(r"^\s*(y|yes|yeah|yep|sure|ok|okay|go ahead|do it|confirm|proceed|correct|send it|yes please|👍)\b", re.I)
 CONFIRM_Q = re.compile(r"(confirm|go ahead|proceed|shall i|should i|okay to)", re.I)
+# Only reuse the previous tool shortlist for real follow-ups (confirmations, an email, a number),
+# not for a new request that happens to be under 6 words ("Hi", "Weather in lagos").
+FOLLOWUP_RE = re.compile(
+    r"^\s*(?:"
+    r"(?:y|yes|yeah|yep|sure|ok|okay|no|nope|nah|cancel|never mind|don't|do not|"
+    r"go ahead|do it|confirm|proceed|correct|send it|yes please|please do|👍)\b"
+    r"|(?:it'?s|it is|use|try)?\s*[\w.+-]+@[\w.-]+\.\w+\s*"
+    r"|[\d:./+-]+\s*"
+    r")", re.I)
+NAMED_TOOL_RE = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")
+
+def _closest_catalog_tools(name, hint="", n=3):
+    """Resolve a near-miss tool name (e.g. OPENWEATHER_API_SEARCH_PEOPLE) to real catalog tools of the same app."""
+    if name in G.BY: return [name]
+    parts = name.split("_")
+    if len(parts) < 2: return []
+    cands = [t for t in G.BY if t.split("_")[0] == parts[0]]
+    if not cands: return []
+    hint_toks = set(re.findall(r"[A-Za-z0-9]+", (hint + " " + name).upper()))
+    def score(t):
+        tp = t.split("_")
+        pref = 0
+        while pref < len(parts) and pref < len(tp) and parts[pref] == tp[pref]: pref += 1
+        write = any(w in t for w in ("DELETE", "UPDATE", "CREATE", "SEND", "POST", "UPLOAD", "REMOVE", "ARCHIVE"))
+        read_hint = bool(hint_toks & {"READ", "GET", "LIST", "SEARCH", "FETCH", "SHOW", "CURRENT", "WEATHER", "FIND"})
+        return (pref, 0 if (write and read_hint) else 1, len(set(tp) & hint_toks), difflib.SequenceMatcher(None, name, t).ratio())
+    cands = [t for t in cands if score(t)[0] >= 2]
+    cands.sort(key=score, reverse=True)
+    return cands[:n]
+
+def inject_named_catalog_tools(tools, text):
+    """If think/intent names a catalog tool (or a near-miss of one) that retrieval missed, add it to the shortlist."""
+    names = {c["name"] for c in tools}; added = []
+    for n in NAMED_TOOL_RE.findall(text or ""):
+        for t in _closest_catalog_tools(n, text):
+            if t not in names and t in G.BY:
+                tools.append(G.BY[t]); names.add(t); added.append(t)
+    return added
+
+def not_connected_reply(call, res):
+    tool = (call or {}).get("tool", "")
+    c = G.BY.get(tool)
+    app = G.APPNAME.get(c["app"], (res or {}).get("app") or "That app") if c else ((res or {}).get("app") or "That app")
+    if app and app[0].islower(): app = app[0].upper() + app[1:]
+    return f"{app} isn't connected in your Composio account, so I can't run {tool}."
 
 class Agent2(R.Agent):
     """Constrained calls + code-enforced confirmation gate."""
@@ -272,7 +325,15 @@ class Agent2(R.Agent):
                 self.history = self.history[2:]; segs = [["tools", G.tools_block(tools)]] + self.history; ids = self.brain.encode_segs(segs)
             source = "\n".join(t for r, t in self.history if r in ("user", "result"))
             grammar = CallGrammar(tools, source) if self.constrained else None
-            out = self.brain.generate_turn(ids, grammar=grammar) if isinstance(self.brain, Brain2) else self.brain.generate_turn(ids)
+            def _on_call(think, _tools=tools, _src=source):
+                if inject_named_catalog_tools(_tools, think):
+                    self._last_tools = _tools
+                    return CallGrammar(_tools, _src) if self.constrained else None
+                return grammar
+            if isinstance(self.brain, Brain2):
+                out = self.brain.generate_turn(ids, grammar=grammar, on_call=_on_call)
+            else:
+                out = self.brain.generate_turn(ids)
             if not out: return "(no output)"
             last = out[-1]
             if last[0] == "call":
@@ -297,6 +358,10 @@ class Agent2(R.Agent):
                 self.history.append(["call", last[1]]); self.trace.append(["call", last[1]])
                 res = self.exec(call) if call else {"ok": False, "error": "invalid_json"}
                 self.history.append(["result", json.dumps(res)]); self.trace.append(["result", json.dumps(res)])
+                if isinstance(res, dict) and res.get("error") == "not_connected":
+                    msg = not_connected_reply(call, res)
+                    self.history.append(["assistant", msg]); self.trace.append(["assistant", msg])
+                    return msg
                 continue
             for role, t in out: self.history.append([role, t]); self.trace.append([role, t])
             if last[0] == "assistant": return last[1]
@@ -378,16 +443,22 @@ class PlanRunner:
 SPLIT_RE = re.compile(r"\b(?:then|after that|and then|afterwards|once|when|whenever|as soon as|only when|every|and)\b|[,.;]", re.I)
 def _agent2_tools(self):
     text = self.users[-1]
-    if getattr(self, "_last_tools", None) and len(text.split()) < 6:
+    if getattr(self, "_last_tools", None) and FOLLOWUP_RE.match(text) and len(text.split()) < 8:
         return self._last_tools                         # short answers ("yes", "it's a@b.com") keep the tool set of the request
-    parts = [p.strip() for p in SPLIT_RE.split(" ".join(self.users[-2:])) if p and len(p.strip().split()) >= 2]
+    # A new request is retrieved on its own. Joining the previous user message mixed tool lists
+    # (weather then "show my emails" used to retrieve OpenWeather + Outlook together).
+    q = " ".join(self.users[-2:]) if (len(self.users) >= 2 and FOLLOWUP_RE.match(text)) else text
+    parts = [p.strip() for p in SPLIT_RE.split(q) if p and len(p.strip().split()) >= 2]
     if len(parts) >= 2:
         names, tools = set(), []
-        for c in self.ret.top(" ".join(self.users[-2:]), 3) + [c for p in parts for c in self.ret.top(p, 2)]:
+        for c in self.ret.top(q, 3) + [c for p in parts for c in self.ret.top(p, 2)]:
             if c["name"] not in names: names.add(c["name"]); tools.append(c)
         tools = tools[:9]
     else:
-        tools = R.Agent._tools(self)
+        tools = self.ret.top(q, self.k)
+        used = [G.BY[json.loads(t)["tool"]] for r, t in self.history if r == "call" and json.loads(t).get("tool") in G.BY][-2:]
+        have = {c["name"] for c in tools}
+        tools = [c for c in used if c["name"] not in have] + tools
     self._last_tools = tools
     return tools
 Agent2._tools = _agent2_tools

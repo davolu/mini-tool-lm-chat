@@ -49,11 +49,26 @@ class Retriever:
     def __init__(self, path=None):
         from model2vec import StaticModel
         path = path or next(p for p in [os.path.join(HERE, "retriever/potion-base-8M"), "/workspace/jev-executor/data/potion-base-8M", "minishlab/potion-base-8M"] if not p.startswith("/") or os.path.exists(p))
-        self.m = StaticModel.from_pretrained(path)
-        self.docs = [f"{APPNAME[c['app']]} {object_of(c)} {c['name'].replace('_', ' ').lower()}. {c['desc']}" for c in CAT]
-        self.E = self._emb(self.docs)
+        try:
+            self.m = StaticModel.from_pretrained(path)
+            self.docs = [f"{APPNAME[c['app']]} {object_of(c)} {c['name'].replace('_', ' ').lower()}. {c['desc']}" for c in CAT]
+            self.E = self._emb(self.docs)
+        except Exception as e:
+            raise RuntimeError(f"Failed to load the tool retriever from {path!r}: {e}") from e
+        if self.E.ndim != 2 or self.E.shape[0] != len(CAT) or not np.isfinite(self.E).all():
+            raise RuntimeError(f"Tool retriever embeddings are invalid (shape={getattr(self.E, 'shape', None)}).")
+        if float(self.E.std()) < 1e-6:
+            raise RuntimeError("Tool retriever embeddings are degenerate (nearly identical vectors). Tool search would be constant.")
+        # two very different queries must not produce the same ranking (catches a silent zero/constant fallback)
+        a = [c["name"] for c in self.top("weather forecast in lagos", 3)]
+        b = [c["name"] for c in self.top("show my latest emails", 3)]
+        if a == b:
+            raise RuntimeError(f"Tool retriever is not ranking by query (got {a} for both weather and email).")
     def _emb(self, xs):
-        e = self.m.encode(xs); return e / (np.linalg.norm(e, axis=1, keepdims=True) + 1e-9)
+        e = self.m.encode(xs)
+        if not isinstance(e, np.ndarray) or e.size == 0 or not np.isfinite(e).all():
+            raise RuntimeError("Tool retriever produced empty or non-finite embeddings.")
+        return e / (np.linalg.norm(e, axis=1, keepdims=True) + 1e-9)
     def top(self, query, k=5, app_boost=True):
         s = self.E @ self._emb([query])[0]
         if app_boost:  # if the user names an app, prefer that app's tools

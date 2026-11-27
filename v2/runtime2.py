@@ -394,6 +394,33 @@ class Agent2(R.Agent):
                 out = self.brain.generate_turn(ids, grammar=grammar, on_call=_on_call)
             else:
                 out = self.brain.generate_turn(ids)
+            # Benign multi-step requests were sometimes refused because DELETE tools had been retrieved.
+            # Retry once without those tools; if it still refuses, take the first read step (writes still need Approve).
+            already_acted = any(r == "call" for r, _t in self._prompt_history())
+            if out and _is_refusal(out) and not HARM_USER_RE.search(text or ""):
+                if already_acted:
+                    out = [["assistant", "I've done the first read step. Later steps that create or change a file need your Approve — say if you want me to continue."]]
+                else:
+                    cleaned = [c for c in tools if not _is_destructive_tool(c)] or tools
+                    tools = cleaned; self._last_tools = tools
+                    segs, ids = self._fit_prompt(self._prompt_history(), tools)
+                    source = "\n".join(t for r, t in self._prompt_history() if r in ("user", "result"))
+                    grammar = CallGrammar(tools, source) if self.constrained else None
+                    if isinstance(self.brain, Brain2):
+                        out2 = self.brain.generate_turn(ids, grammar=grammar, on_call=_on_call)
+                    else:
+                        out2 = self.brain.generate_turn(ids)
+                    if out2 and not _is_refusal(out2):
+                        out = out2
+                    elif out2 and _is_refusal(out2):
+                        conn = None
+                        fn = getattr(self.exec, "connected", None)
+                        if callable(fn):
+                            try: conn = (fn() or {}).get("connected")
+                            except Exception: conn = None
+                        first = _first_read_call(tools, text, conn)
+                        if first:
+                            out = [["think", f"first step -> {first['tool']}"], ["call", json.dumps(first, ensure_ascii=False)]]
             if not out: return "(no output)"
             last = out[-1]
             if last[0] == "call":
@@ -509,21 +536,54 @@ class PlanRunner:
 
 # ---------------- tool retrieval for long multi-step requests ----------------
 SPLIT_RE = re.compile(r"\b(?:then|after that|and then|afterwards|once|when|whenever|as soon as|only when|every|and)\b|[,.;]", re.I)
+# Destructive verbs: down-weight these tools unless the user actually asked for that verb.
+# Seeing DELETE_* in the shortlist made the model refuse benign plans ("extract the date into an excel file").
+DEST_VERBS = {"DELETE", "REMOVE", "TRASH", "ERASE", "DESTROY", "REVOKE", "WIPE", "PURGE", "EMPTY", "UNLINK"}
+DEST_USER_RE = re.compile(r"\b(?:delete|remove|trash|erase|destroy|revoke|wipe|purge|empty|unlink)\b", re.I)
+HARM_USER_RE = re.compile(
+    r"\b(?:hack|phish|malware|impersonate|steal(?:\s+(?:a|someone's|his|her|their))?\s+password|spam emails?|fake reviews?)\b"
+    r"|without telling|delete all .{0,40}(colleague|coworker|someone|their|his|her)",
+    re.I)
+REFUSE_THINK_RE = re.compile(r"harmful or not allowed|\brefuse\b", re.I)
+REFUSE_REPLY_RE = re.compile(r"sorry, i can't help|won't do that|not something i can help", re.I)
+
+def _slug_words(name):
+    app = (G.BY[name]["app"].upper() + "_") if name in G.BY else ""
+    s = name.upper()
+    if app and s.startswith(app): s = s[len(app):]
+    return s.split("_")
+
+def _is_destructive_tool(c):
+    return any(w in DEST_VERBS for w in _slug_words(c["name"]))
+
+def _top_for(ret, query, k, allow_dest=False):
+    """Retrieve extra candidates, then drop destructive tools the user did not ask for."""
+    picked, names = [], set()
+    for c in ret.top(query, max(k * 5, 20)):
+        if (not allow_dest) and _is_destructive_tool(c):
+            continue
+        if c["name"] not in names:
+            names.add(c["name"]); picked.append(c)
+        if len(picked) >= k:
+            break
+    return picked
+
 def _agent2_tools(self):
     text = self.users[-1]
     if getattr(self, "_last_tools", None) and FOLLOWUP_RE.match(text) and len(text.split()) < 8:
         return self._last_tools                         # short answers ("yes", "it's a@b.com") keep the tool set of the request
-    # A new request is retrieved on its own. Joining the previous user message mixed tool lists
-    # (weather then "show my emails" used to retrieve OpenWeather + Outlook together).
     q = " ".join(self.users[-2:]) if (len(self.users) >= 2 and FOLLOWUP_RE.match(text)) else text
+    allow_dest = bool(DEST_USER_RE.search(q))
     parts = [p.strip() for p in SPLIT_RE.split(q) if p and len(p.strip().split()) >= 2]
     if len(parts) >= 2:
         names, tools = set(), []
-        for c in self.ret.top(q, 3) + [c for p in parts for c in self.ret.top(p, 2)]:
+        # Clause order: first clause first (so "check my mail … and save to Drive" starts with mail tools,
+        # not Drive tools), then later clauses, then the full request.
+        for c in [c for p in parts for c in _top_for(self.ret, p, 4, allow_dest)] + _top_for(self.ret, q, 3, allow_dest):
             if c["name"] not in names: names.add(c["name"]); tools.append(c)
         tools = tools[:9]
     else:
-        tools = self.ret.top(q, self.k)
+        tools = _top_for(self.ret, q, self.k, allow_dest)
         if self._is_followup(text):
             used = [G.BY[json.loads(t)["tool"]] for r, t in self.history if r == "call" and json.loads(t).get("tool") in G.BY][-2:]
             have = {c["name"] for c in tools}
@@ -531,3 +591,40 @@ def _agent2_tools(self):
     self._last_tools = tools
     return tools
 Agent2._tools = _agent2_tools
+
+def _is_refusal(out):
+    think = " ".join(t for r, t in out if r == "think")
+    asst = " ".join(t for r, t in out if r == "assistant")
+    return bool(REFUSE_THINK_RE.search(think) or REFUSE_REPLY_RE.search(asst))
+
+def _first_read_call(tools, user_text, connected=None):
+    """A generic first step when the model falsely refuses a benign multi-step request: the first read tool, with a query/subject copied from the user text if the tool has that parameter.
+    If several read tools could work, prefer one whose app is already connected."""
+    import composio_exec as X
+    title = None
+    m = re.search(r"\b(?:titled|called|named|subject(?:\s+is)?|about|re:)\s+[\"']?([A-Za-z0-9._-]+)", user_text or "", re.I)
+    if m: title = m.group(1)
+    cands = []
+    for c in tools:
+        if X.classify(c["name"]) != "read":
+            continue
+        args = {}
+        pnames = [p["name"] for p in c["params"]]
+        if title:
+            for key in ("query", "q", "subject", "search"):
+                if key in pnames:
+                    args[key] = f"subject:{title}" if key == "query" else title
+                    break
+        missing = [p["name"] for p in c["params"] if p["required"] and p["name"] not in args]
+        if missing:
+            continue
+        cands.append((c, args))
+    if not cands:
+        return None
+    if connected:
+        have = set(connected) | set(getattr(X, "NO_AUTH_APPS", ()))
+        for c, args in cands:
+            if c.get("app") in have:
+                return {"tool": c["name"], "args": args}
+    c, args = cands[0]
+    return {"tool": c["name"], "args": args}

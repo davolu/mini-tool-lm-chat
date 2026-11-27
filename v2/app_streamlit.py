@@ -9,7 +9,7 @@ Live mode uses the Composio accounts that are ALREADY connected (it never create
     showing the exact arguments - on top of the model's own confirmation question and the code confirmation gate;
   * the same applies to every risky step of a PLAN when it fires.
 The API key is read only from the environment and is never displayed or written."""
-import os, sys, json, time
+import os, sys, json, time, re
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 sys.path.insert(0, ROOT); sys.path.insert(0, HERE); os.chdir(ROOT)
 import streamlit as st
@@ -178,6 +178,11 @@ def render_turn(t):
                     else: st.code(txt, language="json")
             elif role == "assistant":
                 st.markdown(("🔐 " if txt.startswith("[gate]") else "") + txt)
+                m = re.search(r"\[([^\]]+)\]\((https://[^)]+)\)", txt or "")
+                if m:
+                    st.link_button(m.group(1), m.group(2))
+                elif "https://platform.composio.dev" in (txt or ""):
+                    st.link_button("Open Composio to connect", "https://platform.composio.dev")
 
 # ---------------------------------------------------------------- main
 st.title("Chat with mini-tool-lm v2")

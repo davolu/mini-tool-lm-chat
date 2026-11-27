@@ -292,12 +292,17 @@ def inject_named_catalog_tools(tools, text):
                 tools.append(G.BY[t]); names.add(t); added.append(t)
     return added
 
-def not_connected_reply(call, res):
+def not_connected_reply(call, res, link=None):
     tool = (call or {}).get("tool", "")
     c = G.BY.get(tool)
     app = G.APPNAME.get(c["app"], (res or {}).get("app") or "That app") if c else ((res or {}).get("app") or "That app")
     if app and app[0].islower(): app = app[0].upper() + app[1:]
-    return f"{app} isn't connected in your Composio account, so I can't run {tool}."
+    msg = f"{app} isn't connected in your Composio account, so I can't run {tool}."
+    if link:
+        msg += f"\n\n[Connect {app} in Composio]({link})\n\nThen ask again."
+    else:
+        msg += f"\n\nConnect {app} at https://platform.composio.dev, then ask again."
+    return msg
 
 class Agent2(R.Agent):
     """Constrained calls + code-enforced confirmation gate."""
@@ -359,7 +364,14 @@ class Agent2(R.Agent):
                 res = self.exec(call) if call else {"ok": False, "error": "invalid_json"}
                 self.history.append(["result", json.dumps(res)]); self.trace.append(["result", json.dumps(res)])
                 if isinstance(res, dict) and res.get("error") == "not_connected":
-                    msg = not_connected_reply(call, res)
+                    link = None
+                    fn = getattr(self.exec, "connect_link", None)
+                    if callable(fn):
+                        try:
+                            link, _reason = fn(res.get("app") or (c["app"] if c else None))
+                        except Exception:
+                            link = None
+                    msg = not_connected_reply(call, res, link=link)
                     self.history.append(["assistant", msg]); self.trace.append(["assistant", msg])
                     return msg
                 continue

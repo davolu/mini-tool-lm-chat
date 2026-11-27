@@ -263,6 +263,13 @@ FOLLOWUP_RE = re.compile(
     r"|[\d:./+-]+\s*"
     r")", re.I)
 NAMED_TOOL_RE = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")
+# A later message is a new request when it looks like one (question/request words).
+# Short slot-fills ("Lagos", "yes", an email) stay follow-ups of the previous turn.
+NEW_REQUEST_RE = re.compile(
+    r"\b(?:what|what's|whats|who|where|when|which|how|show|list|search|find|check|get|fetch|tell|"
+    r"look\s*up|give|read|open|send|write|create|make|add|delete|remove|play|set|schedule|"
+    r"remind|summarize|forward|move|copy|mail|email|gmail|calendar|weather|news)\b|[?]",
+    re.I)
 
 def _closest_catalog_tools(name, hint="", n=3):
     """Resolve a near-miss tool name (e.g. OPENWEATHER_API_SEARCH_PEOPLE) to real catalog tools of the same app."""
@@ -316,6 +323,52 @@ class Agent2(R.Agent):
         users = [t for r, t in self.history if r == "user"]
         asst = [t for r, t in self.history if r == "assistant"]
         return bool(users) and YES_RE.search(users[-1]) and bool(asst) and CONFIRM_Q.search(asst[-1])
+    def _is_followup(self, text=None):
+        """True for confirmations, emails, numbers, and short slot-fills (e.g. a city) after a question or missing arg."""
+        text = self.users[-1] if text is None and self.users else (text or "")
+        if FOLLOWUP_RE.match(text):
+            return True
+        if len(text.split()) > 6 or NEW_REQUEST_RE.search(text):
+            return False
+        last_res = next((t for r, t in reversed(self.history[:-1]) if r == "result"), None)
+        last_asst = next((t for r, t in reversed(self.history[:-1]) if r == "assistant"), None)
+        missing = False
+        if last_res:
+            try:
+                d = json.loads(last_res)
+                missing = d.get("error") == "invalid_argument" or bool(d.get("missing"))
+            except Exception:
+                pass
+        asked = bool(last_asst and ("?" in last_asst or re.search(r"\b(which|what|where|who|missing|need|looking for)\b", last_asst, re.I)))
+        return bool(missing or asked)
+
+    def _prompt_history(self):
+        """History fed to the model. A new request starts from the latest user message so a finished prior
+        turn (e.g. a not-connected reply) cannot push the model into small-talk / closing mode."""
+        text = self.users[-1] if self.users else ""
+        if not self._is_followup(text):
+            # This request only, including think/call/result already produced in this turn (so a tool
+            # result is still visible), but not a finished prior conversation.
+            for i in range(len(self.history) - 1, -1, -1):
+                if self.history[i][0] == "user" and self.history[i][1] == text:
+                    return list(self.history[i:])
+            return [["user", text]]
+        return list(self.history)
+
+    def _fit_prompt(self, hist, tools):
+        """Trim oldest prompt items to fit the context window; never drop the latest user message."""
+        text = self.users[-1] if self.users else ""
+        def encode(h):
+            segs = [["tools", G.tools_block(tools)]] + h
+            return segs, self.brain.encode_segs(segs)
+        segs, ids = encode(hist)
+        while len(ids) > self.brain.cfg.ctx - 170 and len(hist) > 1:
+            hist = hist[1:]
+            if not hist or hist[-1] != ["user", text]:
+                hist = hist + [["user", text]]
+            segs, ids = encode(hist)
+        return segs, ids
+
     def send(self, text, max_steps=4):
         self.users.append(text); self.history.append(["user", text]); self.trace.append(["user", text])
         if self.pending is not None:      # a risky call is waiting for the user's answer (gate asked in code)
@@ -326,11 +379,8 @@ class Agent2(R.Agent):
                 msg = "Okay, I won't do it."; self.history.append(["assistant", msg]); self.trace.append(["assistant", msg]); return msg
         tools = self._tools()
         for _ in range(max_steps + 1):
-            segs = [["tools", G.tools_block(tools)]] + self.history
-            ids = self.brain.encode_segs(segs)
-            while len(ids) > self.brain.cfg.ctx - 170 and len(self.history) > 2:
-                self.history = self.history[2:]; segs = [["tools", G.tools_block(tools)]] + self.history; ids = self.brain.encode_segs(segs)
-            source = "\n".join(t for r, t in self.history if r in ("user", "result"))
+            segs, ids = self._fit_prompt(self._prompt_history(), tools)
+            source = "\n".join(t for r, t in self._prompt_history() if r in ("user", "result"))
             grammar = CallGrammar(tools, source) if self.constrained else None
             def _on_call(think, _tools=tools, _src=source):
                 inject_named_catalog_tools(_tools, think)
@@ -474,9 +524,10 @@ def _agent2_tools(self):
         tools = tools[:9]
     else:
         tools = self.ret.top(q, self.k)
-        used = [G.BY[json.loads(t)["tool"]] for r, t in self.history if r == "call" and json.loads(t).get("tool") in G.BY][-2:]
-        have = {c["name"] for c in tools}
-        tools = [c for c in used if c["name"] not in have] + tools
+        if self._is_followup(text):
+            used = [G.BY[json.loads(t)["tool"]] for r, t in self.history if r == "call" and json.loads(t).get("tool") in G.BY][-2:]
+            have = {c["name"] for c in tools}
+            tools = [c for c in used if c["name"] not in have] + tools
     self._last_tools = tools
     return tools
 Agent2._tools = _agent2_tools

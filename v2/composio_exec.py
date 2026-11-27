@@ -7,9 +7,9 @@ Safety design (for the Streamlit app):
     Everything else (send, post, create, update, upload, delete, forward, move, unknown verbs...) is HELD in `pending`
     and runs only when approve(id) is called (the UI's Approve button), with the exact args shown to the user.
   * Tools whose app has no ACTIVE Composio account return a clear {"ok": false, "error": "not_connected", ...}.
-  * connect_link(toolkit) may return a Composio Connect URL so the user can authorize that app. It reuses an existing
-    auth config, or creates a Composio-managed auth config only when none exists and managed auth is available. It never
-    creates custom/paid auth configs, never completes OAuth, and never waits for the user to finish.
+  * connect_link(toolkit) returns a Composio hosted Connect URL so the user can authorize that app. It reuses an
+    existing auth config, or creates one when needed (Composio-managed auth if available, otherwise a custom API-key /
+    scheme config with no credentials baked in). It never completes OAuth, never enters keys, and never waits for the user.
   * Nothing is written to disk (no logs of args/results)."""
 import os, re, json, time, itertools, threading
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
@@ -137,9 +137,10 @@ class LiveExecutor:
     def connect_link(self, toolkit):
         """Return (url_or_None, reason) so the user can connect `toolkit` under the auto-picked user id.
 
-        Never completes OAuth. Never creates a custom/paid auth config. A Composio-managed auth config is created
-        only when the toolkit has no existing config and Composio-managed auth is available. The result is cached
-        per toolkit so repeat questions do not start extra connection requests.
+        Never completes OAuth and never enters credentials. Creates an auth config when the toolkit has none:
+        Composio-managed if that is available, otherwise a custom config for the toolkit's scheme (API key etc.)
+        with no credentials baked in, so the user types them on Composio's hosted connect page. The result is
+        cached per toolkit so repeat questions do not start extra connection requests.
         """
         if not toolkit or toolkit in NO_AUTH_APPS: return None, "no_auth_needed"
         cache = getattr(self, "_connect_cache", None)
@@ -157,32 +158,55 @@ class LiveExecutor:
         cfgs = self.composio.auth_configs.list(toolkit_slug=toolkit, limit=100)
         items = list(getattr(cfgs, "items", None) or [])
         def dump(it): return it.model_dump() if hasattr(it, "model_dump") else {}
-        # Prefer an existing Composio-managed config; newest first. Never create a custom config.
-        items.sort(key=lambda it: (0 if dump(it).get("is_composio_managed") else 1, str(dump(it).get("created_at") or "")), reverse=False)
         managed = [it for it in items if dump(it).get("is_composio_managed")]
         existing = managed or items
         auth_id = None
         if existing:
-            # newest: items were sorted oldest-first by created_at within each managed flag, so take last of the preferred group
             existing.sort(key=lambda it: str(dump(it).get("created_at") or ""))
             auth_id = existing[-1].id
         else:
-            info = self.composio.toolkits.get(toolkit)
-            d = info.model_dump() if hasattr(info, "model_dump") else {}
-            schemes = d.get("composio_managed_auth_schemes") or d.get("composio_managed_auth") or []
-            if not schemes:
-                return None, "no_managed_auth"
-            # Composio-managed auth is available and no config exists yet: create only that managed config.
-            created = self.composio._client.auth_configs.create(
-                toolkit={"slug": toolkit},
-                auth_config={"type": "use_composio_managed_auth", "tool_access_config": {"tools_for_connected_account_creation": []}},
-            )
-            auth_id = getattr(getattr(created, "auth_config", created), "id", None) or getattr(created, "id", None)
-            if not auth_id: return None, "managed_create_failed"
-        req = self.composio.connected_accounts.link(user_id=uid, auth_config_id=auth_id, allow_multiple=True)
+            auth_id, err = self._create_auth_config(toolkit)
+            if not auth_id: return None, err or "auth_config_create_failed"
+        try:
+            req = self.composio.connected_accounts.link(user_id=uid, auth_config_id=auth_id)
+        except Exception as e:
+            # link() is preferred; initiate() still works for some API-key configs
+            try:
+                req = self.composio.connected_accounts.initiate(uid, auth_id)
+            except Exception as e2:
+                return None, scrub(str(e2) or str(e))[:200]
         url = getattr(req, "redirect_url", None)
         if not url: return None, "no_redirect_url"
         return url, "ok"
+    def _create_auth_config(self, toolkit):
+        """Create an auth config with no credentials baked in. Prefer Composio-managed auth; else the toolkit's own scheme."""
+        info = self.composio.toolkits.get(toolkit)
+        d = info.model_dump() if hasattr(info, "model_dump") else {}
+        schemes_managed = d.get("composio_managed_auth_schemes") or d.get("composio_managed_auth") or []
+        name = f"mini-tool-lm-chat {toolkit}"
+        try:
+            if schemes_managed:
+                created = self.composio.auth_configs.create(toolkit, {"type": "use_composio_managed_auth", "name": name})
+            else:
+                details = d.get("auth_config_details") or []
+                mode = None
+                for ad in details:
+                    mode = ad.get("mode") if isinstance(ad, dict) else getattr(ad, "mode", None)
+                    if mode: break
+                if not mode:
+                    return None, "no_auth_scheme"
+                created = self.composio.auth_configs.create(toolkit, {
+                    "type": "use_custom_auth",
+                    "auth_scheme": mode,
+                    "name": name,
+                    # no credentials: the user enters them on Composio's hosted connect page
+                })
+        except Exception as e:
+            return None, scrub(str(e))[:200]
+        auth_id = getattr(created, "id", None)
+        if not auth_id and hasattr(created, "auth_config"):
+            auth_id = getattr(created.auth_config, "id", None)
+        return (auth_id, None) if auth_id else (None, "auth_config_create_failed")
     def default_user_ids(self):
         """If no user id is configured: the user id that owns the most ACTIVE accounts (the main account), then the rest by count."""
         cnt = {}

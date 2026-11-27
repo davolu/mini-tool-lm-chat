@@ -292,7 +292,7 @@ def inject_named_catalog_tools(tools, text):
                 tools.append(G.BY[t]); names.add(t); added.append(t)
     return added
 
-def not_connected_reply(call, res, link=None):
+def not_connected_reply(call, res, link=None, link_error=None):
     tool = (call or {}).get("tool", "")
     c = G.BY.get(tool)
     app = G.APPNAME.get(c["app"], (res or {}).get("app") or "That app") if c else ((res or {}).get("app") or "That app")
@@ -302,6 +302,8 @@ def not_connected_reply(call, res, link=None):
         msg += f"\n\n[Connect {app} in Composio]({link})\n\nThen ask again."
     else:
         msg += f"\n\nConnect {app} at https://platform.composio.dev, then ask again."
+        if link_error:
+            msg += f"\n\n(Could not open the app's connect page: {link_error})"
     return msg
 
 class Agent2(R.Agent):
@@ -331,10 +333,13 @@ class Agent2(R.Agent):
             source = "\n".join(t for r, t in self.history if r in ("user", "result"))
             grammar = CallGrammar(tools, source) if self.constrained else None
             def _on_call(think, _tools=tools, _src=source):
-                if inject_named_catalog_tools(_tools, think):
-                    self._last_tools = _tools
-                    return CallGrammar(_tools, _src) if self.constrained else None
-                return grammar
+                inject_named_catalog_tools(_tools, think)
+                self._last_tools = _tools
+                # If think names a tool that is already in the shortlist, prefer that tool (generic, not app-specific).
+                have = {c["name"] for c in _tools}
+                preferred = [c for c in _tools if c["name"] in set(NAMED_TOOL_RE.findall(think or "")) and c["name"] in have]
+                use = preferred or _tools
+                return CallGrammar(use, _src) if self.constrained else None
             if isinstance(self.brain, Brain2):
                 out = self.brain.generate_turn(ids, grammar=grammar, on_call=_on_call)
             else:
@@ -364,14 +369,15 @@ class Agent2(R.Agent):
                 res = self.exec(call) if call else {"ok": False, "error": "invalid_json"}
                 self.history.append(["result", json.dumps(res)]); self.trace.append(["result", json.dumps(res)])
                 if isinstance(res, dict) and res.get("error") == "not_connected":
-                    link = None
+                    link, link_error = None, None
                     fn = getattr(self.exec, "connect_link", None)
                     if callable(fn):
                         try:
-                            link, _reason = fn(res.get("app") or (c["app"] if c else None))
-                        except Exception:
-                            link = None
-                    msg = not_connected_reply(call, res, link=link)
+                            link, reason = fn(res.get("app") or (c["app"] if c else None))
+                            if not link: link_error = reason
+                        except Exception as e:
+                            link, link_error = None, str(e)[:200]
+                    msg = not_connected_reply(call, res, link=link, link_error=link_error)
                     self.history.append(["assistant", msg]); self.trace.append(["assistant", msg])
                     return msg
                 continue
